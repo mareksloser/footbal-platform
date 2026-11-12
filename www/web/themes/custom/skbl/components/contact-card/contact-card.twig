@@ -1,0 +1,33 @@
+<article class="relative bg-card border border-line rounded-xl p-5 pl-6 flex flex-col h-full overflow-hidden">
+  <span aria-hidden="true" class="absolute left-0 inset-y-0 w-1 {{ merged ? 'bg-blue' : 'bg-red' }}"></span>
+  {% if heading %}
+    <p class="text-sm font-semibold {{ merged ? 'text-blueink' : 'text-redink' }}">{{ heading }}</p>
+  {% endif %}
+  {% if subheading %}<p class="text-xs text-muted">{{ subheading }}</p>{% endif %}
+  <p class="cond text-2xl font-bold leading-tight mt-1">{{ name }}</p>
+
+  {% if phone or email %}
+    <div class="mt-3 space-y-1.5 text-sm">
+      {% if phone %}
+        <p class="flex items-center gap-2">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-muted shrink-0" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+          <span class="tnum">{{ phone }}</span>
+        </p>
+      {% endif %}
+      {% if email %}
+        <p class="flex items-center gap-2 min-w-0">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-muted shrink-0" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+          <span class="truncate">{{ email }}</span>
+        </p>
+      {% endif %}
+    </div>
+    <div class="mt-auto pt-4 flex gap-2">
+      {% if phone %}
+        <a href="tel:{{ phone_href }}" class="flex-1 h-10 grid place-items-center rounded-md bg-ink text-bg text-sm font-semibold hover:opacity-90">Zavolat<span class="sr-only"> – {{ name }}</span></a>
+      {% endif %}
+      {% if email %}
+        <a href="mailto:{{ email }}" class="flex-1 h-10 grid place-items-center rounded-md border border-line text-sm font-semibold hover:bg-surface">Napsat e-mail<span class="sr-only"> – {{ name }}</span></a>
+      {% endif %}
+    </div>
+  {% endif %}
+</article>

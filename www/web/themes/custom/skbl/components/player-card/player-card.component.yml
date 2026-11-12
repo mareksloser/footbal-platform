@@ -1,0 +1,17 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Karta hráče
+status: stable
+description: 'Štít s fotkou (nebo siluetou), číslem, jménem a postem.'
+props:
+  type: object
+  properties:
+    first_name: { type: string, title: 'Jméno' }
+    last_name: { type: string, title: 'Příjmení' }
+    number: { type: ['string', 'integer', 'null'], title: 'Číslo dresu' }
+    position: { type: ['string', 'null'], title: 'Post' }
+    url: { type: ['string', 'null'], title: 'Odkaz na profil' }
+    photo_url: { type: ['string', 'null'], title: 'URL fotky' }
+    partner: { type: boolean, title: 'Hráč partnerského klubu' }
+    partner_label: { type: ['string', 'null'], title: 'Název partnerského klubu' }
+    bare: { type: boolean, title: 'Jen štít bez textu (detail hráče)' }
+    big: { type: boolean, title: 'Velký štít' }

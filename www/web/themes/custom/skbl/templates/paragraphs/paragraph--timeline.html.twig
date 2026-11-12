@@ -1,0 +1,5 @@
+{# Časová osa (Historie). Položky = paragraphs Milník v poli field_items. #}
+<section{{ attributes }}>
+  {% if paragraph.field_title.value %}<h2 class="cond text-3xl font-bold mb-6">{{ paragraph.field_title.value }}</h2>{% endif %}
+  <ol class="border-l-2 border-red/30 ml-2 space-y-8">{{ content.field_items }}</ol>
+</section>

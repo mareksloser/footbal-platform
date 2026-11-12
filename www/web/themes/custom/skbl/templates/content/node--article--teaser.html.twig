@@ -1,0 +1,4 @@
+<div{{ attributes.addClass('h-full') }}>
+  {{ title_prefix }}{{ title_suffix }}
+  {{ include('skbl:article-card', skbl|merge({featured: false}), with_context = false) }}
+</div>

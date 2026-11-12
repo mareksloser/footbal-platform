@@ -1,0 +1,18 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Karta článku
+status: stable
+description: 'Aktualita – obrázek 16:10, datum, štítek týmu, nadpis, perex. Celá karta je klikací.'
+props:
+  type: object
+  properties:
+    url: { type: string }
+    title: { type: string }
+    lead: { type: ['string', 'null'] }
+    date: { type: ['string', 'null'] }
+    image_url: { type: ['string', 'null'] }
+    logo_url: { type: ['string', 'null'], title: 'Logo klubu (náhrada chybějícího obrázku)' }
+    team_label: { type: ['string', 'null'] }
+    team_merged: { type: boolean }
+    team_is_club: { type: boolean }
+    show_team: { type: boolean }
+    featured: { type: boolean, title: 'Velká varianta (obrázek vedle textu)' }

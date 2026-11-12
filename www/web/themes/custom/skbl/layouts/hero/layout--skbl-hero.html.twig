@@ -1,0 +1,12 @@
+{% if content %}
+  <section{{ attributes.addClass('bg-surface', 'relative', 'overflow-hidden', 'border-b', 'border-line') }}>
+    <div aria-hidden="true" class="absolute inset-x-0 top-0 h-1 bg-red"></div>
+    <div aria-hidden="true" class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[18%] bg-card/70 border-x border-red/10"></div>
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 py-10 lg:py-14 grid lg:grid-cols-[1.5fr_1fr] gap-8 lg:gap-12">
+      <div{{ region_attributes.main.addClass('min-w-0') }}>{{ content.main }}</div>
+      {% if content.aside %}
+        <aside{{ region_attributes.aside.addClass('skbl-panel', 'self-start') }}>{{ content.aside }}</aside>
+      {% endif %}
+    </div>
+  </section>
+{% endif %}

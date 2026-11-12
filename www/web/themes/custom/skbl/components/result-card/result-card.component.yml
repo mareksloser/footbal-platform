@@ -1,0 +1,19 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Výsledek zápasu
+status: stable
+props:
+  type: object
+  properties:
+    url: { type: ['string', 'null'] }
+    date: { type: ['string', 'null'], title: 'Datum (krátce)' }
+    is_home: { type: boolean }
+    home_name: { type: string }
+    away_name: { type: string }
+    home_score: { type: ['string', 'integer', 'null'] }
+    away_score: { type: ['string', 'integer', 'null'] }
+    result: { type: ['string', 'null'], enum: ['V', 'R', 'P', null], title: 'Výsledek z pohledu klubu' }
+    team_label: { type: ['string', 'null'] }
+    team_merged: { type: boolean }
+    show_team: { type: boolean, title: 'Zobrazit štítek týmu' }
+    tournament: { type: ['string', 'null'], title: 'Název turnaje (místo skóre)' }
+    placement: { type: ['string', 'null'], title: 'Umístění na turnaji' }

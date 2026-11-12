@@ -1,0 +1,19 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Video
+status: stable
+props:
+  type: object
+  properties:
+    url: { type: ['string', 'null'] }
+    title: { type: string }
+    thumbnail_url: { type: ['string', 'null'] }
+    duration: { type: ['string', 'null'] }
+    category: { type: ['string', 'null'] }
+    date: { type: ['string', 'null'] }
+    team_label: { type: ['string', 'null'] }
+    team_merged: { type: boolean }
+    show_team: { type: boolean }
+    featured: { type: boolean, title: 'Velká varianta (poslední video)' }
+    stacked: { type: boolean, title: 'Náhled nad textem (mřížka videotéky)' }
+    external: { type: boolean, title: 'Odkaz mimo web (VEO)' }
+    source_label: { type: ['string', 'null'], title: 'Zdroj (VEO)' }

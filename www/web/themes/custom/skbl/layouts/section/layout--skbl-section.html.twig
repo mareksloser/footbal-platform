@@ -1,0 +1,5 @@
+{% if content %}
+  <section{{ attributes.addClass('mx-auto', 'max-w-7xl', 'px-4', 'sm:px-6', 'py-12', 'sm:py-16') }}>
+    <div{{ region_attributes.main.addClass('space-y-12') }}>{{ content.main }}</div>
+  </section>
+{% endif %}

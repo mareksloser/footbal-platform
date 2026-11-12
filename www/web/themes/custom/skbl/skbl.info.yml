@@ -1,0 +1,18 @@
+name: SKBL
+type: theme
+description: 'Téma webu SK Baník Libušín (Tailwind CSS 4, SDC komponenty, podpora filtrování podle týmu ze skbl_core).'
+package: 'SK Baník Libušín'
+core_version_requirement: ^10.3 || ^11
+base theme: stable9
+logo: logo.png
+libraries:
+  - skbl/global
+regions:
+  ticker: 'Lišta akcí (nahoře)'
+  header_left: 'Hlavička – menu vlevo'
+  header_right: 'Hlavička – menu vpravo'
+  switcher: 'Přepínač týmů'
+  highlighted: 'Zvýrazněné (zprávy)'
+  page_header: 'Záhlaví stránky (drobečky, nadpis)'
+  content: 'Obsah'
+  footer: 'Patička'

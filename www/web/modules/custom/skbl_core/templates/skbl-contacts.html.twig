@@ -1,0 +1,23 @@
+{#
+/**
+ * @file
+ * Kontakty – výchozí jednoduchý markup. Téma SKBL ho přepisuje kartami.
+ *
+ * - sections: skupiny vedení klubu [{title, items}]
+ * - teams: trenéři a vedoucí
+ *   Položka: role, name, phone, phone_href, email, team, team_short, merged.
+ */
+#}
+{% for section in sections|merge([{title: 'Trenéři a vedoucí týmů', items: teams}]) %}
+  {% if section.items %}
+    <h2>{{ section.title }}</h2>
+    <ul>
+      {% for c in section.items %}
+        <li>{{ c.team ? c.team ~ ' – ' }}{{ c.role }}: {{ c.name }}
+          {% if c.phone %}, <a href="tel:{{ c.phone_href }}">{{ c.phone }}</a>{% endif %}
+          {% if c.email %}, <a href="mailto:{{ c.email }}">{{ c.email }}</a>{% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endfor %}

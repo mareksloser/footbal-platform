@@ -1,0 +1,5 @@
+{# Video v mřížce videotéky (view mode „card“) – náhled nad textem. #}
+<div{{ attributes.addClass('h-full') }}>
+  {{ title_prefix }}{{ title_suffix }}
+  {{ include('skbl:video-card', skbl|merge({featured: false, stacked: true}), with_context = false) }}
+</div>

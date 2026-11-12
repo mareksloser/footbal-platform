@@ -1,0 +1,10 @@
+langcode: cs
+status: true
+dependencies: {}
+name: Tým
+type: team
+description: 'Tým klubu. Jeden tým se zaškrtnutým „Celý klub“ slouží jako úvodní stránka.'
+help: ''
+new_revision: true
+preview_mode: 0
+display_submitted: false

@@ -1,0 +1,17 @@
+<div class="py-3 flex gap-4">
+  <div class="w-12 shrink-0 text-center">
+    <div class="cond text-3xl font-bold leading-none tnum">{{ day }}</div>
+    <div class="text-xs text-muted mt-1">{{ month }}</div>
+  </div>
+  <div class="min-w-0">
+    <p class="font-semibold leading-snug">
+      {% if url %}<a href="{{ url }}" class="hover:text-redink">{{ title }}</a>{% else %}{{ title }}{% endif %}
+    </p>
+    {% if note or show_team %}
+      <p class="text-sm text-muted mt-0.5 flex items-center gap-2 flex-wrap">
+        {% if show_team %}{{ include('skbl:team-chip', {label: team_label, merged: team_merged, club: team_is_club}, with_context = false) }}{% endif %}
+        {% if note %}<span>{{ note }}</span>{% endif %}
+      </p>
+    {% endif %}
+  </div>
+</div>

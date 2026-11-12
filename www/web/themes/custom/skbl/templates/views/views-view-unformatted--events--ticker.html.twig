@@ -1,0 +1,10 @@
+{#
+/**
+ * @file
+ * Lišta akcí: view „events“, display „ticker“.
+ * Řádky se střídají přes skbl.js, ostatní jsou skryté.
+ */
+#}
+{% for row in rows %}
+  <div data-ticker-item{% if not loop.first %} hidden{% endif %}>{{ row.content }}</div>
+{% endfor %}

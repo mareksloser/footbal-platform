@@ -1,0 +1,18 @@
+{# Kompaktní kontakty vedení do bočního panelu. #}
+<div{{ attributes.addClass('skbl-card') }}>
+  <h2 class="cond text-2xl font-bold mb-2">{{ skbl.title }}</h2>
+  {% if not skbl.items %}
+    <p class="text-sm text-muted py-2">Zatím tu nikdo není. Kontakty se berou z realizačního týmu nodu „Celý klub“.</p>
+  {% endif %}
+  <ul class="divide-y divide-line text-sm">
+    {% for c in skbl.items %}
+      <li class="py-3">
+        <p class="text-muted">{{ c.role }}</p>
+        <p class="font-semibold">{{ c.name }}</p>
+        {% if c.email %}<a href="mailto:{{ c.email }}" class="block text-redink hover:underline truncate">{{ c.email }}</a>{% endif %}
+        {% if c.phone %}<a href="tel:{{ c.phone_href }}" class="block text-redink hover:underline tnum">{{ c.phone }}</a>{% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+  {% if skbl.contacts_url %}<a href="{{ skbl.contacts_url }}" class="inline-block mt-3 text-sm font-semibold text-redink hover:underline">Všechny kontakty</a>{% endif %}
+</div>

@@ -1,0 +1,8 @@
+{% if content %}
+  <section{{ attributes.addClass('mx-auto', 'max-w-7xl', 'px-4', 'sm:px-6', 'py-12', 'grid', 'lg:grid-cols-[1fr_20rem]', 'gap-12') }}>
+    <div{{ region_attributes.main.addClass('min-w-0', 'space-y-12') }}>{{ content.main }}</div>
+    {% if content.aside %}
+      <aside{{ region_attributes.aside.addClass('skbl-aside', 'space-y-6', 'lg:sticky', 'lg:top-44', 'self-start') }}>{{ content.aside }}</aside>
+    {% endif %}
+  </section>
+{% endif %}

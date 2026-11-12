@@ -1,0 +1,5 @@
+{% if club %}
+  <span class="text-xs px-2 py-0.5 rounded-full bg-surface border border-line text-muted">{{ label|default('Klub') }}</span>
+{% elseif label %}
+  <span class="text-xs px-2 py-0.5 rounded-full border font-semibold {{ merged ? 'border-blue/40 text-blueink bg-blue/5' : 'border-red/30 text-redink bg-red/5' }}">{{ label }}</span>
+{% endif %}

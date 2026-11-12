@@ -1,0 +1,18 @@
+langcode: cs
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_is_club
+    - node.type.team
+id: node.team.field_is_club
+field_name: field_is_club
+entity_type: node
+bundle: team
+label: 'Celý klub'
+description: 'Zaškrtněte jen u jednoho týmu „Celý klub“, který slouží jako úvodní stránka a pro klubový obsah.'
+required: false
+translatable: false
+default_value: {}
+default_value_callback: ''
+settings: { on_label: Ano, off_label: Ne }
+field_type: boolean

@@ -1,0 +1,19 @@
+{#
+/**
+ * @file
+ * Soupiska na stránce týmu – view „players“, display „roster“,
+ * seskupení podle pole Post. Každá skupina volá tuto šablonu zvlášť.
+ */
+#}
+{% set plural = {'Brankář': 'Brankáři', 'Obránce': 'Obránci', 'Záložník': 'Záložníci', 'Útočník': 'Útočníci'} %}
+{% set heading = title|render|striptags|trim %}
+<div class="skbl-roster-group">
+  {% if heading %}
+    <h3 class="mb-4 font-semibold text-muted">{{ plural[heading] ?? heading }}</h3>
+  {% endif %}
+  <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-x-5 gap-y-8">
+    {% for row in rows %}
+      <div{{ row.attributes }}>{{ row.content }}</div>
+    {% endfor %}
+  </div>
+</div>

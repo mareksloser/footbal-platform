@@ -1,0 +1,36 @@
+{% macro crest(logo, initials) %}
+  {% if logo %}
+    <img src="{{ logo }}" alt="" class="h-20 sm:h-24 w-auto drop-shadow-sm">
+  {% else %}
+    <span class="grid place-items-center h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-card ring-1 ring-line text-muted cond text-3xl font-bold">{{ initials }}</span>
+  {% endif %}
+{% endmacro %}
+{% import _self as m %}
+{% set us %}
+  <div class="flex -space-x-3">
+    {{ m.crest(club_logo, 'SK') }}
+    {% if partner_short %}
+      <span class="relative grid place-items-center h-20 w-16 sm:h-24 sm:w-20 shield bg-card"><span class="absolute inset-[5px] shield bg-blue"></span><span class="relative cond font-extrabold text-white text-xl">{{ partner_short }}</span></span>
+    {% endif %}
+  </div>
+{% endset %}
+{% set them = m.crest(opponent_logo, opponent_initials) %}
+{% set left = is_home ? {crest: us, name: club_name} : {crest: them, name: opponent_name} %}
+{% set right = is_home ? {crest: them, name: opponent_name} : {crest: us, name: club_name} %}
+<div>
+  <div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-muted">
+    {% if when %}<span class="px-2.5 py-1 rounded-full bg-red text-white text-sm font-bold">{{ when }}</span>{% endif %}
+    {% if kicker %}<span class="font-semibold">{{ kicker }}</span>{% endif %}
+  </div>
+  <div class="mt-8 grid grid-cols-[1fr_auto_1fr] items-center gap-3 sm:gap-6">
+    <div class="flex flex-col items-center text-center gap-3">{{ left.crest }}<p class="cond text-xl sm:text-3xl lg:text-4xl font-bold leading-tight text-balance hyphens-auto">{{ left.name }}</p></div>
+    <div class="text-center"><p class="cond text-4xl sm:text-6xl font-bold tnum text-redink">{{ time|default('–') }}</p></div>
+    <div class="flex flex-col items-center text-center gap-3">{{ right.crest }}<p class="cond text-xl sm:text-3xl lg:text-4xl font-bold leading-tight text-balance hyphens-auto">{{ right.name }}</p></div>
+  </div>
+  <dl class="mt-8 flex flex-wrap gap-x-8 gap-y-2">
+    {% if date_long %}<div class="flex gap-1.5"><dt class="text-muted">Kdy</dt><dd>{{ date_long }}{{ time ? ', ' ~ time }}</dd></div>{% endif %}
+    {% if venue %}<div class="flex gap-1.5"><dt class="text-muted">Kde</dt><dd>{{ venue }}</dd></div>{% endif %}
+    {% if competition %}<div class="flex gap-1.5"><dt class="text-muted">Soutěž</dt><dd>{{ competition }}</dd></div>{% endif %}
+  </dl>
+  {% if url %}<a href="{{ url }}" class="mt-6 inline-block text-sm font-semibold text-redink hover:underline">Detail zápasu</a>{% endif %}
+</div>

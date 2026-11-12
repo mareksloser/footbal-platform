@@ -1,0 +1,159 @@
+{#
+/**
+ * @file
+ * Detail hráče – štít, údaje, statistiky, poslední zápasy, spoluhráči.
+ * Data: skbl (karta) a player (detail) ze skbl_preprocess_node__player().
+ */
+#}
+{% set first_team = player.teams|first %}
+{% set badge = {
+  'V': ['Výhra', 'bg-win text-white'],
+  'P': ['Prohra', 'bg-red text-white'],
+  'R': ['Remíza', 'bg-draw text-white'],
+} %}
+<article{{ attributes }}>
+  {{ title_prefix }}{{ title_suffix }}
+
+  {# --- Záhlaví --- #}
+  <header class="bg-surface border-b border-line relative overflow-hidden">
+    <div aria-hidden="true" class="absolute inset-x-0 top-0 h-1 {{ skbl.partner ? 'bg-blue' : 'bg-red' }}"></div>
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 py-10">
+      <nav aria-label="Drobečková navigace" class="text-sm text-muted">
+        <ol class="flex flex-wrap items-center gap-2">
+          <li><a href="{{ path('<front>') }}" class="hover:text-ink">Úvod</a></li>
+          {% if first_team %}
+            <li class="flex items-center gap-2"><span aria-hidden="true">/</span><a href="{{ first_team.url }}" class="hover:text-ink">{{ first_team.label }}</a></li>
+          {% endif %}
+          <li class="flex items-center gap-2"><span aria-hidden="true">/</span><span class="text-ink" aria-current="page">{{ label }}</span></li>
+        </ol>
+      </nav>
+
+      <div class="mt-6 grid sm:grid-cols-[13rem_1fr] md:grid-cols-[15rem_1fr] gap-8 md:gap-12 items-end">
+        <div class="w-44 sm:w-full">
+          {{ include('skbl:player-card', {
+            first_name: skbl.first_name, last_name: skbl.last_name, number: skbl.number,
+            photo_url: skbl.photo_url, partner: skbl.partner, bare: true, big: true,
+          }, with_context = false) }}
+        </div>
+        <div class="pb-2">
+          <p class="text-xl text-muted">{{ skbl.first_name }}</p>
+          <h1 class="cond text-6xl sm:text-7xl font-bold leading-none">{{ skbl.last_name }}</h1>
+          <dl class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-3 text-sm max-w-2xl">
+            {% if skbl.number is not empty %}<div><dt class="text-muted">Číslo</dt><dd class="font-semibold tnum">{{ skbl.number }}</dd></div>{% endif %}
+            {% if skbl.position %}<div><dt class="text-muted">Post</dt><dd class="font-semibold">{{ skbl.position }}</dd></div>{% endif %}
+            {% if player.birth_year %}<div><dt class="text-muted">Ročník</dt><dd class="font-semibold tnum">{{ player.birth_year }}</dd></div>{% endif %}
+            <div><dt class="text-muted">Mateřský klub</dt><dd class="font-semibold {{ skbl.partner ? 'text-blueink' }}">{{ skbl.partner ? skbl.partner_label : 'SK Baník Libušín' }}</dd></div>
+          </dl>
+          {% if player.teams|length > 1 %}
+            <p class="mt-4 flex flex-wrap gap-2 text-sm">
+              {% for t in player.teams %}
+                <a href="{{ t.url }}" class="px-2.5 py-0.5 rounded-full border font-semibold {{ t.merged ? 'border-blue/40 text-blueink bg-blue/5' : 'border-red/30 text-redink bg-red/5' }}">{{ t.label }}</a>
+              {% endfor %}
+            </p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-12 space-y-14">
+
+    {# --- Statistiky aktuální sezóny --- #}
+    {% if player.current %}
+      <section>
+        <h2 class="cond text-3xl font-bold mb-4">Sezóna {{ player.current.season }}</h2>
+        {% set tiles = [
+          ['Zápasy', player.current.apps], ['Starty', player.current.starts], ['Góly', player.current.goals],
+          ['Asistence', player.current.assists], ['Žluté karty', player.current.yellow],
+        ] %}
+        <div class="grid grid-cols-3 sm:grid-cols-5 bg-card border border-line rounded-xl overflow-hidden divide-x divide-line max-w-3xl">
+          {% for t in tiles %}
+            <div class="p-4 {{ loop.index > 3 ? 'max-sm:border-t max-sm:border-line' }}">
+              <p class="cond text-4xl font-bold tnum leading-none">{{ t[1] }}</p>
+              <p class="text-xs text-muted mt-2">{{ t[0] }}</p>
+            </div>
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+
+    {% if player.matches or player.seasons|length > 1 %}
+      <div class="grid lg:grid-cols-2 gap-10">
+        {% if player.matches %}
+          <section>
+            <h2 class="cond text-3xl font-bold mb-4">Poslední zápasy</h2>
+            <ul class="bg-card border border-line rounded-xl divide-y divide-line">
+              {% for m in player.matches %}
+                <li>
+                  <a href="{{ m.url }}" class="flex items-center gap-3 px-4 py-3 hover:bg-surface">
+                    <span class="w-12 text-sm text-muted tnum">{{ m.date }}</span>
+                    <span class="flex-1 min-w-0">
+                      <span class="block truncate">{{ m.is_home ? 'doma' : 'venku' }} s {{ m.opponent }}</span>
+                      <span class="block text-xs text-muted">
+                        {{ m.started ? 'základ' : 'náhradník' }}{% if m.goals %} · {{ m.goals }}× gól{% endif %}{% if m.assists %} · {{ m.assists }}× asistence{% endif %}{% if m.yellow %} · ŽK{% endif %}{% if m.red %} · ČK{% endif %}
+                      </span>
+                    </span>
+                    <span class="cond text-xl font-bold tnum">{{ m.score }}</span>
+                    {% set b = badge[m.result] %}
+                    <span class="h-6 w-6 grid place-items-center rounded text-xs font-bold {{ b[1] }}" title="{{ b[0] }}">{{ m.result }}</span>
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </section>
+        {% endif %}
+
+        {% if player.seasons %}
+          <section>
+            <h2 class="cond text-3xl font-bold mb-4">Sezóny</h2>
+            <div class="bg-card border border-line rounded-xl overflow-x-auto">
+              <table class="w-full text-sm tnum">
+                <thead class="text-left text-muted">
+                  <tr class="border-b border-line">
+                    <th class="py-3 px-4 font-medium">Sezóna</th>
+                    <th class="py-3 px-3 font-medium text-right">Z</th>
+                    <th class="py-3 px-3 font-medium text-right">S</th>
+                    <th class="py-3 px-3 font-medium text-right">G</th>
+                    <th class="py-3 px-3 font-medium text-right">A</th>
+                    <th class="py-3 px-4 font-medium text-right">ŽK</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for row in player.seasons %}
+                    <tr class="border-b border-line last:border-0">
+                      <td class="py-3 px-4">{{ row.season }}</td>
+                      <td class="py-3 px-3 text-right">{{ row.apps }}</td>
+                      <td class="py-3 px-3 text-right">{{ row.starts }}</td>
+                      <td class="py-3 px-3 text-right font-semibold">{{ row.goals }}</td>
+                      <td class="py-3 px-3 text-right">{{ row.assists }}</td>
+                      <td class="py-3 px-4 text-right">{{ row.yellow }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <p class="mt-2 text-xs text-muted">Z = zápasy, S = starty v základu, G = góly, A = asistence, ŽK = žluté karty.</p>
+          </section>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if content.body|render|striptags|trim %}
+      <section class="max-w-3xl">
+        <h2 class="cond text-3xl font-bold mb-4">O hráči</h2>
+        <div class="skbl-prose">{{ content.body }}</div>
+      </section>
+    {% endif %}
+
+    {% if player.mates %}
+      <section>
+        <h2 class="cond text-3xl font-bold mb-5">Další hráči týmu</h2>
+        <div class="no-scrollbar flex gap-4 sm:gap-5 overflow-x-auto snap-x snap-mandatory pb-4 -mx-4 px-4 sm:mx-0 sm:px-0">
+          {% for mate in player.mates %}
+            <div class="snap-start shrink-0 w-36 sm:w-40">{{ mate }}</div>
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+  </div>
+</article>

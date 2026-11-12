@@ -1,0 +1,36 @@
+<?php
+
+use Drupal\user\UserInterface;
+
+/**
+ * Implements hook_openid_connect_userinfo_alter().
+ *
+ * Team Auth sends app roles in "roles" and cross-app roles in "global_roles";
+ * OpenID Connect role mapping reads "groups".
+ */
+function skbl_module_openid_connect_userinfo_alter(array &$userinfo, array $context): void {
+  $userinfo['groups'] = array_values(array_unique(array_merge(
+    $userinfo['roles'] ?? [],
+    $userinfo['global_roles'] ?? [],
+  )));
+}
+
+/**
+ * Implements hook_openid_connect_post_authorize().
+ *
+ * Stores the tokens in the session for the token debug page. Only for users
+ * allowed to see that page; the refresh token is intentionally not stored.
+ */
+function skbl_module_openid_connect_post_authorize(UserInterface $account, array $context): void {
+  if (!$account->hasPermission('view skbl token debug')) {
+    return;
+  }
+
+  $tokens = $context['tokens'] ?? [];
+  \Drupal::request()->getSession()->set('skbl_module.token_debug', [
+    'time' => \Drupal::time()->getRequestTime(),
+    'plugin_id' => $context['plugin_id'] ?? NULL,
+    'tokens' => array_intersect_key($tokens, array_flip(['id_token', 'access_token', 'expire'])),
+    'userinfo' => $context['userinfo'] ?? NULL,
+  ]);
+}

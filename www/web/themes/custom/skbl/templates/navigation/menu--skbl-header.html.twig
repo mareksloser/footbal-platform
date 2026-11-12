@@ -1,0 +1,49 @@
+{#
+/**
+ * @file
+ * Menu v hlavičce (regiony header_left/header_right) s rozbalovacími podmenu.
+ * Na desktopu se podmenu otevírá najetím nebo klávesnicí, v mobilním menu
+ * tlačítkem (viz skbl.js a třídy .skbl-nav / .skbl-mobile-nav v CSS).
+ */
+#}
+{% import _self as menus %}
+{{ menus.menu_links(items, attributes, 0) }}
+
+{% macro menu_links(items, attributes, menu_level) %}
+  {% import _self as menus %}
+  {% if items %}
+    {% if menu_level == 0 %}
+      <ul{{ attributes.removeAttribute('data-skbl-region').addClass('skbl-nav', 'flex', 'items-center', 'gap-1', 'text-[15px]') }}>
+    {% else %}
+      <ul class="skbl-nav__sub bg-card border border-line rounded-lg shadow-xl p-2 text-sm min-w-60">
+    {% endif %}
+    {% for item in items %}
+      {% if menu_level == 0 and item.below %}
+        <li class="skbl-nav__item relative group">
+          <button type="button" class="skbl-nav__toggle w-full px-3 py-2 rounded-md hover:bg-surface flex items-center justify-between gap-1 {{ item.in_active_trail ? 'text-redink' }}" aria-expanded="false">
+            {{ item.title }}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="skbl-dd absolute left-0 top-full pt-2 z-50">
+            {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
+          </div>
+        </li>
+      {% elseif menu_level == 0 %}
+        <li class="skbl-nav__item">
+          {{ link(item.title, item.url, {'class': ['block', 'px-3', 'py-2', 'rounded-md', 'hover:bg-surface', item.in_active_trail ? 'text-redink' : '']}) }}
+        </li>
+      {% elseif item.url.routed and item.url.routeName == '<nolink>' %}
+        {# Položka s odkazem <nolink> v podmenu = nadpis skupiny (Dospělí, Mládež). #}
+        <li class="px-3 pt-3 pb-1 text-xs text-muted first:pt-1">{{ item.title }}</li>
+      {% else %}
+        <li>
+          <a href="{{ item.url }}" class="flex items-center justify-between gap-3 px-3 py-2 rounded hover:bg-surface {{ item.in_active_trail ? 'text-redink' }}">
+            <span>{{ item.title }}</span>
+            {% if item.skbl_merged %}<span class="text-xs text-blueink whitespace-nowrap">{{ item.skbl_merged }}</span>{% endif %}
+          </a>
+        </li>
+      {% endif %}
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}

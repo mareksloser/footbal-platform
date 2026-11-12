@@ -1,0 +1,41 @@
+{#
+/**
+ * @file
+ * Zápas jako řádek v archivu výsledků (view mode „row“).
+ */
+#}
+{% set badge = {
+  'V': ['Výhra', 'bg-win text-white'],
+  'P': ['Prohra', 'bg-red text-white'],
+  'R': ['Remíza', 'bg-draw text-white'],
+}[skbl.result] ?? null %}
+<div{{ attributes }}>
+  {{ title_prefix }}{{ title_suffix }}
+  <a href="{{ url }}" class="group grid grid-cols-[3.5rem_1fr_auto] sm:grid-cols-[4.5rem_1fr_auto_auto] items-center gap-x-4 py-3.5 px-3 -mx-3 rounded-lg hover:bg-surface">
+    <div class="text-sm tnum leading-tight">
+      <span class="font-semibold">{{ skbl.date.day_month }}</span>
+      <span class="block text-xs text-muted">{{ skbl.date.weekday }}, {{ skbl.is_home ? 'doma' : 'venku' }}</span>
+    </div>
+    <div class="min-w-0">
+      <p class="truncate">
+        <span class="{{ skbl.is_home ? 'font-semibold' }}">{{ skbl.home_name }}</span>
+        <span class="text-muted">–</span>
+        <span class="{{ not skbl.is_home ? 'font-semibold' }}">{{ skbl.away_name }}</span>
+      </p>
+      {% if skbl.show_team or skbl.competition %}
+        <p class="mt-0.5 flex items-center gap-2 text-xs text-muted min-w-0">
+          {% if skbl.show_team %}{{ include('skbl:team-chip', {label: skbl.team_label, merged: skbl.team_merged}, with_context = false) }}{% endif %}
+          {% if skbl.competition %}<span class="truncate">{{ skbl.competition }}</span>{% endif %}
+        </p>
+      {% endif %}
+    </div>
+    <div class="cond text-2xl sm:text-3xl font-bold tnum group-hover:text-redink">
+      {% if skbl.played %}{{ skbl.home_score }}:{{ skbl.away_score }}{% else %}–{% endif %}
+    </div>
+    {% if badge %}
+      <span class="max-sm:hidden h-7 w-7 grid place-items-center rounded text-xs font-bold {{ badge[1] }}" title="{{ badge[0] }}">{{ skbl.result }}</span>
+    {% else %}
+      <span class="max-sm:hidden w-7"></span>
+    {% endif %}
+  </a>
+</div>

@@ -1,0 +1,14 @@
+{% for type, messages in message_list %}
+  {% set tone = {
+    'status': 'border-l-[#1e8e3e] bg-card',
+    'warning': 'border-l-[#f2c500] bg-card',
+    'error': 'border-l-red bg-red/5',
+  }[type] ?? 'border-l-line bg-card' %}
+  <div role="{{ type == 'error' ? 'alert' : 'status' }}" class="mb-4 border border-line border-l-4 {{ tone }} rounded-lg px-4 py-3 text-sm" aria-label="{{ status_headings[type] }}">
+    {% if messages|length > 1 %}
+      <ul class="list-disc pl-5 space-y-1">{% for message in messages %}<li>{{ message }}</li>{% endfor %}</ul>
+    {% else %}
+      {{ messages|first }}
+    {% endif %}
+  </div>
+{% endfor %}

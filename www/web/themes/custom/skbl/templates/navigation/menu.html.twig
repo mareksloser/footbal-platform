@@ -1,0 +1,26 @@
+{#
+/**
+ * @file
+ * Ostatní menu (patička apod.) – jednoduchý seznam.
+ */
+#}
+{% import _self as menus %}
+{{ menus.menu_links(items, attributes, 0) }}
+
+{% macro menu_links(items, attributes, menu_level) %}
+  {% import _self as menus %}
+  {% if items %}
+    {% if menu_level == 0 %}
+      <ul{{ attributes.addClass('space-y-1.5') }}>
+    {% else %}
+      <ul class="mt-1.5 ml-3 space-y-1.5">
+    {% endif %}
+      {% for item in items %}
+        <li>
+          {{ link(item.title, item.url, {'class': ['hover:underline', 'underline-offset-4']}) }}
+          {% if item.below %}{{ menus.menu_links(item.below, attributes, menu_level + 1) }}{% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}

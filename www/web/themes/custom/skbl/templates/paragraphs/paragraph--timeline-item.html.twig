@@ -1,0 +1,6 @@
+<li{{ attributes.addClass('relative', 'pl-8') }}>
+  <span aria-hidden="true" class="absolute -left-[7px] top-2 h-3 w-3 rounded-full bg-red ring-4 ring-bg"></span>
+  {% if paragraph.field_year.value %}<p class="cond text-2xl font-bold text-redink tnum">{{ paragraph.field_year.value }}</p>{% endif %}
+  {% if paragraph.field_title.value %}<h3 class="text-lg font-semibold">{{ paragraph.field_title.value }}</h3>{% endif %}
+  <div class="text-muted mt-1 max-w-prose leading-relaxed">{{ content.field_text }}</div>
+</li>

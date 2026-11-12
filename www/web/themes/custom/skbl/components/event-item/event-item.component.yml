@@ -1,0 +1,15 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Položka kalendáře akcí
+status: stable
+props:
+  type: object
+  properties:
+    url: { type: ['string', 'null'] }
+    title: { type: string }
+    day: { type: ['string', 'integer', 'null'] }
+    month: { type: ['string', 'null'], title: 'Zkratka měsíce' }
+    note: { type: ['string', 'null'] }
+    team_label: { type: ['string', 'null'] }
+    team_merged: { type: boolean }
+    team_is_club: { type: boolean }
+    show_team: { type: boolean }

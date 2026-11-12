@@ -1,0 +1,20 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Příští zápas (hero)
+status: stable
+props:
+  type: object
+  properties:
+    when: { type: ['string', 'null'], title: 'Štítek (Dnes / Zítra / Za 3 dny)' }
+    kicker: { type: ['string', 'null'], title: 'Nadtitulek (Příští zápas, Muži A)' }
+    is_home: { type: boolean }
+    club_name: { type: string }
+    club_logo: { type: ['string', 'null'] }
+    partner_short: { type: ['string', 'null'], title: 'Zkratka partnerského klubu (SKV)' }
+    opponent_name: { type: string }
+    opponent_logo: { type: ['string', 'null'] }
+    opponent_initials: { type: ['string', 'null'], title: 'Iniciály soupeře (když chybí logo)' }
+    time: { type: ['string', 'null'] }
+    date_long: { type: ['string', 'null'] }
+    venue: { type: ['string', 'null'] }
+    competition: { type: ['string', 'null'] }
+    url: { type: ['string', 'null'] }

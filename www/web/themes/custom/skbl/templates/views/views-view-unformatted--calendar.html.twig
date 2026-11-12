@@ -1,0 +1,19 @@
+{#
+/**
+ * @file
+ * Kalendář (view „calendar“) – měsíce s položkami pod sebou.
+ * Skupiny připravuje skbl_preprocess_views_view_unformatted().
+ */
+#}
+{% for group in skbl_groups %}
+  <section class="{{ not loop.first ? 'mt-12' }}">
+    {% if group.label %}
+      <h2 class="cond text-3xl font-bold mb-2 first-letter:uppercase">{{ group.label }}</h2>
+    {% endif %}
+    <div class="divide-y divide-line border-y border-line">
+      {% for row in group.rows %}
+        <div{{ row.attributes }}>{{ row.content }}</div>
+      {% endfor %}
+    </div>
+  </section>
+{% endfor %}

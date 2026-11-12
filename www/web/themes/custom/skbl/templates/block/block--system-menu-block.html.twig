@@ -1,0 +1,13 @@
+{#
+/**
+ * @file
+ * Blok menu – název je jen pro čtečky obrazovky.
+ */
+#}
+{% set heading_id = attributes.id ~ '-menu'|clean_id %}
+<nav aria-labelledby="{{ heading_id }}"{{ attributes.without('role', 'aria-labelledby') }}>
+  <h2{{ title_attributes.addClass(region in ['footer'] ? ['font-semibold', 'mb-2', 'text-sm'] : 'sr-only').setAttribute('id', heading_id) }}>{{ configuration.label }}</h2>
+  {% block content %}
+    {{ content }}
+  {% endblock %}
+</nav>

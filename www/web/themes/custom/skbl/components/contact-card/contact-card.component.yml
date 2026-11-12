@@ -1,0 +1,14 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Kontakt
+status: stable
+description: 'Karta osoby s funkcí, telefonem, e-mailem a tlačítky Zavolat / Napsat e-mail.'
+props:
+  type: object
+  properties:
+    heading: { type: ['string', 'null'], title: 'Nadpis (funkce nebo tým)' }
+    subheading: { type: ['string', 'null'], title: 'Podnadpis (funkce u týmu)' }
+    name: { type: string, title: 'Jméno' }
+    phone: { type: ['string', 'null'] }
+    phone_href: { type: ['string', 'null'] }
+    email: { type: ['string', 'null'] }
+    merged: { type: boolean, title: 'Společný tým (modrá)' }

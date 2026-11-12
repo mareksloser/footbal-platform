@@ -1,0 +1,12 @@
+{#
+/**
+ * @file
+ * Odběr kalendáře – výchozí markup (téma SKBL ho přepisuje).
+ */
+#}
+<div class="skbl-calendar-subscribe">
+  <p>Kalendář {{ team_label ?: 'klubu' }} v telefonu:</p>
+  <a href="{{ webcal_url }}">iPhone / Outlook</a> ·
+  <a href="{{ google_url }}">Google Kalendář</a> ·
+  <a href="{{ ics_url }}">Odkaz .ics</a>
+</div>

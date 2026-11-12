@@ -1,0 +1,5 @@
+{# Poslední video – velká karta (view mode „featured“). #}
+<div{{ attributes }}>
+  {{ title_prefix }}{{ title_suffix }}
+  {{ include('skbl:video-card', skbl|merge({featured: true}), with_context = false) }}
+</div>
