@@ -52,6 +52,7 @@
 /web/robots.txt
 /web/update.php
 /web/web.config
+/web/syslog
 
 # Ignore vendor dependencies and scripts
 /vendor
