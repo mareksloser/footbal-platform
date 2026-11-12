@@ -1,0 +1,196 @@
+{% extends 'admin/layout.html.twig' %}
+{% import 'admin/_macros.html.twig' as m %}
+{% block title %}{{ client ? client.name : 'Nová aplikace' }}{% endblock %}
+{% block body %}
+    <h1>
+        {{ client ? client.name : 'Nová aplikace' }}
+        {% if client %}
+            {% if client.active %}<span class="badge ok">aktivní</span>{% else %}<span class="badge off">vypnutá</span>{% endif %}
+            <span class="badge">{{ client.confidential ? 'důvěrný' : 'veřejný' }}</span>
+        {% endif %}
+    </h1>
+
+    <form method="post" class="card">
+        {{ m.csrf() }}
+        <div class="grid">
+            <div>
+                <div class="field"><label for="name">Název</label><input type="text" id="name" name="name" value="{{ form.name }}" required maxlength="128" placeholder="Match Video Review"></div>
+
+                {% if client %}
+                    <div class="field"><label>client_id</label><code>{{ client.identifier }}</code><div class="hint">Nelze změnit.</div></div>
+                    <label class="check"><input type="checkbox" name="active" value="1" {{ form.active ? 'checked' }}> Aktivní – vypnutá aplikace nedostane nové tokeny</label>
+                {% else %}
+                    <div class="field">
+                        <label for="identifier">client_id</label>
+                        <input type="text" id="identifier" name="identifier" value="{{ form.identifier }}" required pattern="[a-z0-9][a-z0-9_\-]{1,79}" placeholder="mvr-web">
+                        <div class="hint">Malá písmena, číslice, pomlčka. Bude v tokenech jako <code>aud</code>.</div>
+                    </div>
+                    <div class="field">
+                        <label>Typ</label>
+                        <label class="check"><input type="radio" name="type" value="public" {{ not form.confidential ? 'checked' }}> <span><b>Veřejný</b> – React/SPA nebo mobilní appka, bez secretu, vynucené PKCE</span></label>
+                        <label class="check"><input type="radio" name="type" value="confidential" {{ form.confidential ? 'checked' }}> <span><b>Důvěrný</b> – PHP backend, který umí secret uchovat</span></label>
+                    </div>
+                {% endif %}
+
+                <div class="field">
+                    <label for="redirect_uris">Redirect URI</label>
+                    <textarea id="redirect_uris" name="redirect_uris" placeholder="https://mvr.example.cz/auth/callback&#10;http://localhost:5173/auth/callback">{{ form.redirect_uris }}</textarea>
+                    <div class="hint">Jedna na řádek. Z jejich originů se povoluje i návrat po odhlášení. Origin SPA přidej také do <code>CORS_ALLOW_ORIGIN</code>.</div>
+                </div>
+            </div>
+            <div>
+                <div class="field">
+                    <label>Typy přihlášení (granty)</label>
+                    {% for value, label in grantOptions %}
+                        <label class="check"><input type="checkbox" name="grants[]" value="{{ value }}" {{ value in form.grants ? 'checked' }}> {{ label }}</label>
+                    {% endfor %}
+                </div>
+                <div class="field">
+                    <label>Povolené scope</label>
+                    {% for s in scopeOptions %}
+                        <label class="check"><input type="checkbox" name="scopes[]" value="{{ s }}" {{ s in form.scopes ? 'checked' }}> <code>{{ s }}</code></label>
+                    {% endfor %}
+                    <div class="hint">Nic nezaškrtnuto = aplikace smí žádat o všechny.</div>
+                </div>
+            </div>
+        </div>
+        <button class="btn" type="submit">{{ client ? 'Uložit' : 'Vytvořit' }}</button>
+        <a class="btn secondary" href="{{ path('admin_clients') }}">Zpět</a>
+    </form>
+
+    {% if client %}
+        <div class="card">
+            <h2>Role aplikace</h2>
+            <p class="muted">Role, které tahle aplikace zná. Uživatelům je přidělíš v jejich detailu, v tokenu budou v claimu <code>roles</code>.</p>
+            <div class="table-wrap" style="margin-bottom:1rem">
+                <table>
+                    <thead><tr><th>Role</th><th>Popis</th><th></th></tr></thead>
+                    <tbody>
+                    {% for r in roles %}
+                        <tr>
+                            <td><code>{{ r.slug }}</code></td>
+                            <td class="muted">{{ r.description }}</td>
+                            <td style="text-align:right">{{ m.post_button(path('admin_client_role_delete', {id: r.id}), 'Smazat', 'Smazat roli ' ~ r.slug ~ '? Odebere se všem uživatelům.', 'btn link') }}</td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="3" class="muted">Zatím žádné role.</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <form method="post" action="{{ path('admin_client_role_add', {identifier: client.identifier}) }}" class="row">
+                {{ m.csrf() }}
+                <div class="field"><label for="rslug">Role</label><input type="text" id="rslug" name="slug" required placeholder="coach"></div>
+                <div class="field" style="flex-grow:2"><label for="rdesc">Popis</label><input type="text" id="rdesc" name="description" maxlength="255" placeholder="Může vytvářet markery a kresby"></div>
+                <button class="btn secondary" type="submit">Přidat roli</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Vzhled přihlášení</h2>
+            <p class="muted">Když se uživatel přihlašuje do této aplikace, přihlašovací stránka použije její logo a barvy. Prázdná barva = výchozí vzhled.</p>
+            <div class="grid">
+                <div>
+                    <form method="post" action="{{ path('admin_client_branding', {identifier: client.identifier}) }}">
+                        {{ m.csrf() }}
+                        {% for field, label in {accent_color: 'Barva tlačítek a zvýraznění', background_color: 'Barva pozadí stránky'} %}
+                            {% set value = field == 'accent_color' ? (brand.accentColor ?? '') : (brand.backgroundColor ?? '') %}
+                            <div class="field">
+                                <label for="{{ field }}">{{ label }}</label>
+                                <div class="row" style="flex-wrap:nowrap">
+                                    <input type="color" value="{{ value ?: '#166534' }}" aria-label="{{ label }} – výběr" data-sync="{{ field }}" style="width:3rem;height:2.4rem;padding:.15rem;flex:none">
+                                    <div class="field"><input type="text" id="{{ field }}" name="{{ field }}" value="{{ value }}" placeholder="výchozí" pattern="#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})" maxlength="7" class="mono"></div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <button class="btn secondary" type="submit">Uložit barvy</button>
+                    </form>
+
+                    <form method="post" action="{{ path('admin_client_logo', {identifier: client.identifier}) }}" enctype="multipart/form-data" style="margin-top:1.25rem">
+                        {{ m.csrf() }}
+                        <div class="field">
+                            <label for="logo">Logo</label>
+                            <input type="file" id="logo" name="logo" accept="image/png,image/jpeg,image/webp,image/svg+xml" required>
+                            <div class="hint">PNG, JPEG, WebP nebo SVG, nejvýš {{ maxLogoKb }} kB. Zobrazí se max. 180 × 96 px, průhledné pozadí vypadá nejlépe.</div>
+                        </div>
+                        <button class="btn secondary" type="submit">Nahrát logo</button>
+                    </form>
+                    {% if brand and brand.hasLogo %}
+                        <div style="margin-top:.5rem">{{ m.post_button(path('admin_client_logo_remove', {identifier: client.identifier}), 'Odebrat logo', 'Odebrat logo aplikace?', 'btn link') }}</div>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label>Náhled</label>
+                    <div id="brand-preview" style="{% for name, value in brandVars %}{{ name }}:{{ value }};{% endfor %} background:var(--bg, var(--surface-2)); border:1px solid var(--border); border-radius:10px; padding:1.5rem; display:grid; place-items:center">
+                        <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.25rem; width:100%; max-width:260px; text-align:center">
+                            {% if brand and brand.hasLogo %}
+                                <img src="{{ path('branding_logo', {clientId: client.identifier, v: brand.logoFile}) }}" alt="" style="max-width:140px;max-height:72px;object-fit:contain;margin-bottom:.75rem">
+                            {% endif %}
+                            <div style="font-weight:700;margin-bottom:.75rem">Přihlášení do {{ client.name }}</div>
+                            <div style="height:2rem;border:1px solid var(--border);border-radius:6px;margin-bottom:.5rem"></div>
+                            <div style="height:2rem;border:1px solid var(--border);border-radius:6px;margin-bottom:.75rem"></div>
+                            <div class="preview-button" style="background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:.5rem;font-weight:600">Přihlásit se</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            // Live preview: colour picker ↔ hex field, and the same black/white contrast rule as App\Branding\Color.
+            (() => {
+                const preview = document.getElementById('brand-preview');
+                const lum = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255)
+                    .map((c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4))
+                    .reduce((sum, c, i) => sum + c * [0.2126, 0.7152, 0.0722][i], 0);
+                const ink = (hex) => (1.05 / (lum(hex) + 0.05) >= (lum(hex) + 0.05) / 0.05 ? '#ffffff' : '#111111');
+                const normalize = (v) => {
+                    v = v.trim().replace(/^#/, '').toLowerCase();
+                    if (/^[0-9a-f]{3}$/.test(v)) v = v.replace(/./g, '$&$&');
+                    return /^[0-9a-f]{6}$/.test(v) ? '#' + v : null;
+                };
+                const apply = (field, value) => {
+                    const prop = field === 'accent_color' ? '--accent' : '--bg';
+                    if (value) {
+                        preview.style.setProperty(prop, value);
+                        if (field === 'accent_color') preview.style.setProperty('--accent-ink', ink(value));
+                    } else {
+                        preview.style.removeProperty(prop);
+                        if (field === 'accent_color') preview.style.removeProperty('--accent-ink');
+                    }
+                };
+                document.querySelectorAll('input[data-sync]').forEach((picker) => {
+                    const text = document.getElementById(picker.dataset.sync);
+                    picker.addEventListener('input', () => { text.value = picker.value; apply(picker.dataset.sync, picker.value); });
+                    text.addEventListener('input', () => {
+                        const value = normalize(text.value);
+                        if (value) picker.value = value;
+                        apply(picker.dataset.sync, text.value.trim() === '' ? null : value);
+                    });
+                });
+            })();
+        </script>
+
+        <div class="card">
+            <h2>Napojení</h2>
+            <div class="table-wrap">
+                <table>
+                    <tr><th>Issuer / authority</th><td><code>{{ issuer }}</code></td></tr>
+                    <tr><th>client_id</th><td><code>{{ client.identifier }}</code></td></tr>
+                    <tr><th>Discovery</th><td><code>{{ issuer }}/.well-known/openid-configuration</code></td></tr>
+                    <tr><th>Scope</th><td><code>{{ (form.scopes|length ? form.scopes : scopeOptions)|join(' ') }}</code></td></tr>
+                </table>
+            </div>
+            {% if client.confidential %}
+                <p class="muted" style="margin-top:1rem">Secret je uložený hashovaně a nejde zobrazit. Když ho ztratíš, vygeneruj nový – starý okamžitě přestane platit.</p>
+                {{ m.post_button(path('admin_client_secret', {identifier: client.identifier}), 'Vygenerovat nový secret', 'Starý secret přestane okamžitě platit. Pokračovat?', 'btn secondary') }}
+            {% endif %}
+        </div>
+
+        <div class="card danger-zone">
+            <h2>Smazat aplikaci</h2>
+            <p class="muted">Smaže klienta, jeho tokeny, role i jejich přiřazení uživatelům. Pro dočasné vypnutí stačí odškrtnout „Aktivní“.</p>
+            {{ m.post_button(path('admin_client_delete', {identifier: client.identifier}), 'Smazat aplikaci', 'Opravdu smazat ' ~ client.name ~ '? Nejde to vrátit.', 'btn danger') }}
+        </div>
+    {% endif %}
+{% endblock %}

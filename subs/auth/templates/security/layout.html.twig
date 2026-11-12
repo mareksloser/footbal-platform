@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="cs">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%90%3C/text%3E%3C/svg%3E">
+    <title>{% block title %}Klubový účet{% endblock %}</title>
+    <style>
+        :root { --bg:#f4f6f5; --card:#fff; --text:#16201b; --muted:#5b6b62; --accent:#14532d; --error:#b42318; --border:#d6ddd9; }
+        @media (prefers-color-scheme: dark) {
+            :root { --bg:#0e1411; --card:#17201b; --text:#e8efe9; --muted:#9fb0a6; --accent:#4ade80; --error:#f97066; --border:#2a3730; }
+        }
+        * { box-sizing: border-box; }
+        body { margin:0; min-height:100vh; display:grid; place-items:center; background:var(--bg); color:var(--text);
+               font:16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; padding:1rem; }
+        .wrap { width:100%; max-width:380px; display:grid; gap:.9rem; justify-items:center; }
+        .logo { display:block; max-width:180px; max-height:96px; margin:0 auto 1.25rem; object-fit:contain; }
+        footer { font-size:.8rem; color:var(--bg-ink, var(--muted)); opacity:.75; }
+        .card { width:100%; max-width:380px; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:2rem; }
+        h1 { font-size:1.35rem; margin:0 0 .25rem; }
+        p.muted { color:var(--muted); margin:0 0 1.5rem; font-size:.95rem; }
+        label { display:block; font-size:.9rem; margin:1rem 0 .35rem; }
+        input { width:100%; padding:.7rem .8rem; border:1px solid var(--border); border-radius:8px; background:transparent; color:inherit; font:inherit; }
+        input:focus { outline:2px solid var(--accent); outline-offset:1px; }
+        button, .btn { display:block; width:100%; margin-top:1.5rem; padding:.75rem; border:0; border-radius:8px; background:var(--accent);
+                       color:var(--accent-ink, var(--card)); font:600 1rem system-ui, sans-serif; cursor:pointer; text-align:center; text-decoration:none; }
+        .error { background:color-mix(in srgb, var(--error) 12%, transparent); color:var(--error); padding:.7rem .8rem; border-radius:8px; font-size:.9rem; }
+        ul { padding-left:1.1rem; } code { font-size:.85rem; }
+        a.btn { box-sizing:border-box; }
+        button.danger { background:var(--error); color:#fff; }
+        .flash { padding:.7rem .8rem; border-radius:8px; font-size:.9rem; margin-bottom:1rem; }
+        .flash.success { background:color-mix(in srgb, var(--accent) 14%, transparent); }
+        .flash.error { background:color-mix(in srgb, var(--error) 12%, transparent); color:var(--error); }
+        .steps { padding-left:1.2rem; margin:0 0 1rem; font-size:.95rem; }
+        .qr { display:block; margin:0 auto 1rem; background:#fff; padding:8px; border-radius:8px; }
+        details { font-size:.9rem; margin-bottom:.5rem; } summary { cursor:pointer; color:var(--muted); }
+        .secret, .codes { font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing:.05em; }
+        .secret { font-size:1.05rem; word-break:break-all; user-select:all; }
+        .codes { list-style:none; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:.4rem .75rem; font-size:1.05rem; margin:1rem 0 0; }
+        h2.section { font-size:1rem; margin:1.5rem 0 .5rem; }
+        .devices { list-style:none; padding:0; margin:0; display:grid; gap:.5rem; }
+        .devices li { display:flex; justify-content:space-between; align-items:flex-start; gap:.5rem; padding:.6rem .75rem; border:1px solid var(--border); border-radius:8px; }
+        .small { font-size:.82rem; }
+        .pill { font-size:.72rem; padding:.05rem .45rem; border-radius:999px; background:color-mix(in srgb, var(--accent) 16%, transparent); margin-left:.25rem; white-space:nowrap; }
+        button.link { display:inline; width:auto; margin:0; padding:.2rem .3rem; background:none; color:var(--error); font-weight:500; font-size:.88rem; }
+        button.secondary { background:transparent; color:var(--text); border:1px solid var(--border); }
+        .status { display:flex; justify-content:space-between; align-items:center; gap:.5rem; padding:.7rem .8rem; border:1px solid var(--border); border-radius:8px; margin:1rem 0 0; font-size:.95rem; }
+    </style>
+    {#- Per-application branding (validated hex colours only) overrides the theme in both light and dark mode. #}
+    {% if brandVars is defined and brandVars is not empty %}
+        <style>:root { {% for name, value in brandVars %}{{ name }}: {{ value }}; {% endfor %}}</style>
+    {% endif %}
+</head>
+<body>
+<div class="wrap">
+    <main class="card">
+        {% for type, messages in app.flashes(['success', 'error']) %}
+            {% for message in messages %}<div class="flash {{ type }}" role="status">{{ message }}</div>{% endfor %}
+        {% endfor %}
+        {% block body %}{% endblock %}
+    </main>
+    {% block footer %}{% endblock %}
+</div>
+</body>
+</html>
