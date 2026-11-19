@@ -1,9 +1,1 @@
-.env
-.env.dev
-.user.ini
-
-vendor/
-
-/.idea
-
-settings.php
+.idea
