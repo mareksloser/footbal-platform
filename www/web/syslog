@@ -1,0 +1,6 @@
+Nov 07 20:59:22 host=127.0.0.1 tls=off auth=off from=robot@skbl.cz recipients=admin@example.com mailsize=872 smtpstatus=250 smtpmsg='250 2.0.0 Ok: queued as 1806C11157' exitcode=EX_OK
+Nov 08 21:59:21 host=127.0.0.1 tls=off auth=off from=robot@skbl.cz recipients=admin@example.com mailsize=872 smtpstatus=250 smtpmsg='250 2.0.0 Ok: queued as B25AB35238' exitcode=EX_OK
+Nov 09 22:59:22 host=127.0.0.1 tls=off auth=off from=robot@skbl.cz recipients=admin@example.com mailsize=1048 smtpstatus=250 smtpmsg='250 2.0.0 Ok: queued as 1A2CD4047A' exitcode=EX_OK
+Nov 10 23:59:21 host=127.0.0.1 tls=off auth=off from=robot@skbl.cz recipients=admin@example.com mailsize=1048 smtpstatus=250 smtpmsg='250 2.0.0 Ok: queued as DACF44C42F' exitcode=EX_OK
+Nov 12 00:59:21 host=127.0.0.1 tls=off auth=off from=robot@skbl.cz recipients=admin@example.com mailsize=1048 smtpstatus=250 smtpmsg='250 2.0.0 Ok: queued as 9619C16FC6' exitcode=EX_OK
+Nov 13 01:59:21 host=127.0.0.1 tls=off auth=off from=robot@skbl.cz recipients=admin@example.com mailsize=1048 smtpstatus=250 smtpmsg='250 2.0.0 Ok: queued as A75A73B112' exitcode=EX_OK
