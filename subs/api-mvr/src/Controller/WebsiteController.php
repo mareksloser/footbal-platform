@@ -53,7 +53,7 @@ final class WebsiteController
         }
     }
 
-    /** GET /matches/by-ref?ref=skbl:node:123 – target of the „Rozbor v MVR“ link on the website. */
+    /** GET /matches/by-ref?ref=club:node:123 – target of the „Rozbor v MVR“ link on the website. */
     public function byRef(Request $request): Response
     {
         $ref = (string) ($request->query['ref'] ?? '');

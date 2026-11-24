@@ -1,0 +1,91 @@
+club_section:
+  label: 'Club: Sekce v kontejneru'
+  category: 'Club'
+  path: layouts/section
+  template: layout--club-section
+  default_region: main
+  icon_map:
+    - [main]
+  regions:
+    main:
+      label: Obsah
+
+club_section_surface:
+  label: 'Club: Sekce na šedém pozadí'
+  category: 'Club'
+  path: layouts/section-surface
+  template: layout--club-section-surface
+  default_region: main
+  icon_map:
+    - [main]
+  regions:
+    main:
+      label: Obsah
+
+club_section_wide:
+  label: 'Club: Sekce přes celou šířku (posuvné pásy)'
+  category: 'Club'
+  path: layouts/section-wide
+  template: layout--club-section-wide
+  default_region: main
+  icon_map:
+    - [main]
+  regions:
+    main:
+      label: Obsah
+
+club_hero:
+  label: 'Club: Hero (zápas + akce)'
+  category: 'Club'
+  path: layouts/hero
+  template: layout--club-hero
+  default_region: main
+  icon_map:
+    - [main, main, aside]
+  regions:
+    main:
+      label: 'Hlavní (příští zápas)'
+    aside:
+      label: 'Boční panel (kalendář akcí)'
+
+club_split:
+  label: 'Club: Dva sloupce 3 : 2'
+  category: 'Club'
+  path: layouts/split
+  template: layout--club-split
+  default_region: first
+  icon_map:
+    - [first, first, first, second, second]
+  regions:
+    first:
+      label: 'Širší sloupec'
+    second:
+      label: 'Užší sloupec'
+
+club_split_surface:
+  label: 'Club: Dva sloupce 3 : 2 na šedém pozadí'
+  category: 'Club'
+  path: layouts/split-surface
+  template: layout--club-split-surface
+  default_region: first
+  icon_map:
+    - [first, first, first, second, second]
+  regions:
+    first:
+      label: 'Širší sloupec'
+    second:
+      label: 'Užší sloupec'
+
+club_with_aside:
+  label: 'Club: Obsah s bočním panelem'
+  category: 'Club'
+  path: layouts/with-aside
+  template: layout--club-with-aside
+  default_region: main
+  icon_map:
+    - [main, main, main, aside]
+  regions:
+    main:
+      label: 'Obsah'
+    aside:
+      label: 'Boční panel (každý blok = karta)'

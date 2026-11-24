@@ -1,0 +1,30 @@
+{% set badge = {
+  'V': ['Výhra', 'bg-win text-white'],
+  'P': ['Prohra', 'bg-red text-white'],
+  'R': ['Remíza', 'bg-draw text-white'],
+}[result] ?? null %}
+{% set tag = url ? 'a' : 'article' %}
+<{{ tag }}{% if url %} href="{{ url }}"{% endif %} class="bg-card p-5 flex flex-col gap-3 h-full {{ url ? 'hover:bg-surface' }}">
+  <div class="flex items-center justify-between gap-2 text-sm text-muted">
+    <span class="tnum">{{ date }}{% if not tournament %}, {{ is_home ? 'doma' : 'venku' }}{% endif %}</span>
+    <span class="flex items-center gap-2">
+      {% if show_team %}{{ include('club:team-chip', {label: team_label, merged: team_merged}, with_context = false) }}{% endif %}
+      {% if badge %}<span class="h-6 w-6 grid place-items-center rounded text-xs font-bold {{ badge[1] }}" title="{{ badge[0] }}">{{ result }}</span>{% endif %}
+    </span>
+  </div>
+  {% if tournament %}
+    <p class="font-semibold">{{ tournament }}</p>
+    {% if placement %}<p class="cond text-2xl font-bold">{{ placement }}</p>{% endif %}
+  {% else %}
+    <div class="space-y-1.5">
+      <div class="flex items-center justify-between gap-3">
+        <span class="truncate {{ is_home ? 'font-semibold' }}">{{ home_name }}</span>
+        <span class="cond text-3xl font-bold tnum leading-none">{{ home_score ?? '–' }}</span>
+      </div>
+      <div class="flex items-center justify-between gap-3">
+        <span class="truncate {{ not is_home ? 'font-semibold' }}">{{ away_name }}</span>
+        <span class="cond text-3xl font-bold tnum leading-none">{{ away_score ?? '–' }}</span>
+      </div>
+    </div>
+  {% endif %}
+</{{ tag }}>

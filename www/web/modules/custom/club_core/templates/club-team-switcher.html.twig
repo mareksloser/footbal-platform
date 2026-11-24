@@ -1,0 +1,29 @@
+{#
+/**
+ * @file
+ * Přepínač týmů.
+ *
+ * Proměnné:
+ * - items: pole s klíči label, url, active, merged, slug.
+ *
+ * Pozor: přidejte cestu k šablonám modulu do `content` (Tailwind v3)
+ * nebo `@source` (Tailwind v4) v tématu, jinak se třídy nevygenerují.
+ */
+#}
+<nav aria-label="{{ 'Výběr týmu'|t }}">
+  <ul class="no-scrollbar flex gap-1.5 overflow-x-auto py-2">
+    {% for item in items %}
+      {% set active_cls = item.merged ? 'bg-blue text-white border-blue' : 'bg-red text-white border-red' %}
+      <li class="shrink-0">
+        <a href="{{ item.url }}"
+           {% if item.active %}aria-current="page"{% endif %}
+           class="h-9 px-3.5 rounded-full text-sm font-semibold border flex items-center gap-1.5 transition-colors {{ item.active ? active_cls : 'bg-card border-line hover:border-ink/40' }}">
+          {% if item.merged %}
+            <span class="h-2 w-2 rounded-full {{ item.active ? 'bg-white' : 'bg-blue' }}" title="{{ 'Společný tým s partnerským klubem'|t }}"></span>
+          {% endif %}
+          {{ item.label }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</nav>

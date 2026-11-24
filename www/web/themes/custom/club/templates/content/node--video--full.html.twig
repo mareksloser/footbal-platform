@@ -1,0 +1,42 @@
+{#
+/**
+ * @file
+ * Detail videa. Vlastní soubor (.mp4/.webm) se přehraje přímo,
+ * odkaz na VEO dostane velké tlačítko.
+ */
+#}
+<article{{ attributes.addClass('mx-auto', 'max-w-5xl', 'px-4', 'sm:px-6', 'py-10') }}>
+  {{ title_prefix }}{{ title_suffix }}
+
+  {% if club_detail.playable %}
+    <video controls preload="metadata" playsinline class="w-full aspect-video rounded-xl bg-black"
+      {% if club.thumbnail_url %}poster="{{ club.thumbnail_url }}"{% endif %}>
+      <source src="{{ club_detail.video_url }}">
+      Váš prohlížeč video nepřehraje. <a href="{{ club_detail.video_url }}">Stáhnout video</a>
+    </video>
+  {% elseif club_detail.video_url %}
+    <a href="{{ club_detail.video_url }}" target="_blank" rel="noopener" class="group relative block aspect-video rounded-xl overflow-hidden bg-gradient-to-br from-[#1d3b2a] to-[#0f2418]">
+      {% if club.thumbnail_url %}<img src="{{ club.thumbnail_url }}" alt="" class="absolute inset-0 h-full w-full object-cover opacity-80">{% endif %}
+      <span class="absolute inset-0 grid place-items-center">
+        <span class="inline-flex items-center gap-3 rounded-full bg-white px-6 py-3 font-semibold text-ink shadow-xl group-hover:scale-105 transition-transform">
+          <svg width="18" height="18" viewBox="0 0 24 24" class="text-red" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>
+          Přehrát na {{ club.source_label|default('webu poskytovatele') }}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+        </span>
+      </span>
+    </a>
+  {% endif %}
+
+  <div class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
+    {{ include('club:team-chip', {label: club.team_label, merged: club.team_merged}, with_context = false) }}
+    {% if club.category %}<span>{{ club.category }}</span>{% endif %}
+    <span>{{ club_detail.date_long }}</span>
+    {% if club.duration %}<span class="tnum">{{ club.duration }}</span>{% endif %}
+    {% if club_detail.mvr_url %}<a href="{{ club_detail.mvr_url }}" class="font-semibold text-redink hover:underline">Rozbor v MVR (hráči a trenéři)</a>{% endif %}
+    {% if club_detail.match_url %}<a href="{{ club_detail.match_url }}" class="font-semibold text-redink hover:underline">Zápas: {{ club_detail.match_label }}</a>{% endif %}
+  </div>
+
+  {% if content.body|render|trim %}
+    <div class="club-prose mt-6 max-w-3xl">{{ content.body }}</div>
+  {% endif %}
+</article>

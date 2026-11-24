@@ -38,13 +38,13 @@ export function createSeed(): DemoDb {
     { id: 4, name: 'Ženy', description: null },
   ];
   const users: DemoDb['users'] = [
-    { id: 1, name: 'Petr Hájek', email: 'trener@banik.cz', password: 'demo', role: 'admin', teamCategoryId: null },
-    { id: 2, name: 'Jakub Svoboda', email: 'hrac@banik.cz', password: 'demo', role: 'player', teamCategoryId: 1 },
-    { id: 3, name: 'Tomáš Dvořák', email: 'tomas@banik.cz', password: 'demo', role: 'player', teamCategoryId: 1 },
-    { id: 4, name: 'Ondřej Král', email: 'ondrej@banik.cz', password: 'demo', role: 'player', teamCategoryId: 1 },
-    { id: 5, name: 'Lukáš Beneš', email: 'lukas@banik.cz', password: 'demo', role: 'player', teamCategoryId: 1 },
-    { id: 6, name: 'Matěj Procházka', email: 'matej@banik.cz', password: 'demo', role: 'player', teamCategoryId: 1 },
-    { id: 7, name: 'Náhled', email: 'view@banik.cz', password: 'demo', role: 'viewer', teamCategoryId: null },
+    { id: 1, name: 'Petr Hájek', email: 'trener@example.cz', password: 'demo', role: 'admin', teamCategoryId: null },
+    { id: 2, name: 'Jakub Svoboda', email: 'hrac@example.cz', password: 'demo', role: 'player', teamCategoryId: 1 },
+    { id: 3, name: 'Tomáš Dvořák', email: 'tomas@example.cz', password: 'demo', role: 'player', teamCategoryId: 1 },
+    { id: 4, name: 'Ondřej Král', email: 'ondrej@example.cz', password: 'demo', role: 'player', teamCategoryId: 1 },
+    { id: 5, name: 'Lukáš Beneš', email: 'lukas@example.cz', password: 'demo', role: 'player', teamCategoryId: 1 },
+    { id: 6, name: 'Matěj Procházka', email: 'matej@example.cz', password: 'demo', role: 'player', teamCategoryId: 1 },
+    { id: 7, name: 'Náhled', email: 'view@example.cz', password: 'demo', role: 'viewer', teamCategoryId: null },
   ];
   const rules: Rule[] = [
     { id: 1, code: '#1', area: 'Rozehrávka', title: 'Rozehrávka od brankáře', body: 'Stopeři se rozestoupí k vápnu, šestka si naběhne mezi ně. První přihrávka jde na volného stopera, ne dlouhým míčem.' },
@@ -56,11 +56,11 @@ export function createSeed(): DemoDb {
   ];
 
   const matches: DemoDb['matches'] = [
-    { id: 1, title: 'SK Baník Libušín – FK Lipová', matchDate: '2026-10-24', teamCategoryId: 1, videoType: 'demo', videoUrl: 'demo://match-1', isPublic: false },
-    { id: 2, title: 'TJ Sokol Horní Lhota – SK Baník Libušín', matchDate: '2026-10-17', teamCategoryId: 1, videoType: 'veo', videoUrl: 'https://app.veo.co/matches/20261017-horni-lhota-banik/', isPublic: false },
-    { id: 3, title: 'Sestřih: Baník Libušín U19 – Slavoj Podlesí', matchDate: '2026-10-11', teamCategoryId: 2, videoType: 'demo', videoUrl: 'demo://match-3', isPublic: true },
-    { id: 4, title: 'Baník Libušín U15 – FC Rovina', matchDate: '2026-10-05', teamCategoryId: 3, videoType: 'demo', videoUrl: 'demo://match-4', isPublic: true },
-    { id: 5, title: 'Přátelák: Baník Libušín ženy – SK Dubí', matchDate: '2026-09-27', teamCategoryId: 4, videoType: 'demo', videoUrl: 'demo://match-5', isPublic: true },
+    { id: 1, title: 'Footbal Platform – FK Lipová', matchDate: '2026-10-24', teamCategoryId: 1, videoType: 'demo', videoUrl: 'demo://match-1', isPublic: false },
+    { id: 2, title: 'TJ Sokol Horní Lhota – Footbal Platform', matchDate: '2026-10-17', teamCategoryId: 1, videoType: 'veo', videoUrl: 'https://app.veo.co/matches/20261017-horni-lhota-fc-domaci/', isPublic: false },
+    { id: 3, title: 'Sestřih: Footbal Platform U19 – Slavoj Podlesí', matchDate: '2026-10-11', teamCategoryId: 2, videoType: 'demo', videoUrl: 'demo://match-3', isPublic: true },
+    { id: 4, title: 'Footbal Platform U15 – FC Rovina', matchDate: '2026-10-05', teamCategoryId: 3, videoType: 'demo', videoUrl: 'demo://match-4', isPublic: true },
+    { id: 5, title: 'Přátelák: Footbal Platform ženy – SK Dubí', matchDate: '2026-09-27', teamCategoryId: 4, videoType: 'demo', videoUrl: 'demo://match-5', isPublic: true },
   ];
 
   const base = { description: null, ruleId: null, ruleLink: null, reviewed: false, reviewedAt: null, drawing: null };
@@ -135,11 +135,11 @@ export function createSeed(): DemoDb {
   const entry = (id: number, event: AuthLogEntry['event'], createdAt: string, email: string, userId: number | null, userName: string | null, detail: string | null, ip: string): AuthLogEntry =>
     ({ id, event, createdAt, email, userId, userName, actorName: null, detail, ip, userAgent: ua });
   const authLog: AuthLogEntry[] = [
-    entry(5, 'login_success', '2026-10-25T19:42:00Z', 'hrac@banik.cz', 2, 'Jakub Svoboda', null, '89.24.17.5'),
-    entry(4, 'login_failed', '2026-10-25T19:41:00Z', 'hrac@banik.cz', 2, 'Jakub Svoboda', 'Špatné heslo', '89.24.17.5'),
-    entry(3, 'login_failed', '2026-10-25T03:12:00Z', 'admin@banik.cz', null, null, 'Neznámý e-mail', '185.220.101.4'),
-    entry(2, 'login_success', '2026-10-24T20:05:00Z', 'tomas@banik.cz', 3, 'Tomáš Dvořák', null, '46.135.8.21'),
-    entry(1, 'login_success', '2026-10-24T18:30:00Z', 'trener@banik.cz', 1, 'Petr Hájek', null, '78.80.3.110'),
+    entry(5, 'login_success', '2026-10-25T19:42:00Z', 'hrac@example.cz', 2, 'Jakub Svoboda', null, '89.24.17.5'),
+    entry(4, 'login_failed', '2026-10-25T19:41:00Z', 'hrac@example.cz', 2, 'Jakub Svoboda', 'Špatné heslo', '89.24.17.5'),
+    entry(3, 'login_failed', '2026-10-25T03:12:00Z', 'admin@example.cz', null, null, 'Neznámý e-mail', '185.220.101.4'),
+    entry(2, 'login_success', '2026-10-24T20:05:00Z', 'tomas@example.cz', 3, 'Tomáš Dvořák', null, '46.135.8.21'),
+    entry(1, 'login_success', '2026-10-24T18:30:00Z', 'trener@example.cz', 1, 'Petr Hájek', null, '78.80.3.110'),
   ];
 
   return { users, categories, matches, markers, rules, views, authLog, seq: 100 };

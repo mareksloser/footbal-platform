@@ -1,0 +1,7 @@
+club_module.token_debug:
+  path: '/admin/reports/club-token'
+  defaults:
+    _controller: '\Drupal\club_module\Controller\TokenDebugController::view'
+    _title: 'Team Auth token'
+  requirements:
+    _permission: 'view club token debug'

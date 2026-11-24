@@ -1,0 +1,20 @@
+services:
+  club_core.team_context:
+    class: Drupal\club_core\TeamContext
+    arguments: ['@current_route_match', '@request_stack', '@entity_type.manager']
+
+  cache_context.team:
+    class: Drupal\club_core\Cache\TeamCacheContext
+    arguments: ['@club_core.team_context']
+    tags:
+      - { name: cache.context }
+
+  club_core.team_param_converter:
+    class: Drupal\club_core\ParamConverter\TeamParamConverter
+    arguments: ['@club_core.team_context', '@entity_type.manager']
+    tags:
+      - { name: paramconverter }
+
+  club_core.contacts_builder:
+    class: Drupal\club_core\ContactsBuilder
+    arguments: ['@club_core.team_context']

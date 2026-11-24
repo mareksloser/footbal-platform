@@ -1,4 +1,4 @@
--- Synchronizace videí z klubového webu (skbl.cz, modul skbl_core).
+-- Synchronizace videí z klubového webu (modul webu skbl_core, dnes club_core).
 -- external_ref = stálý identifikátor videa na webu, např. "skbl:node:123".
 ALTER TABLE `matches`
   ADD COLUMN `external_ref` VARCHAR(64) NULL COMMENT 'video na klubovém webu, např. skbl:node:123' AFTER `is_public`,

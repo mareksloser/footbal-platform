@@ -1,0 +1,45 @@
+{#
+/**
+ * @file
+ * Obal view. Oproti stable9 vrací obal .view-content a .view-header,
+ * na které jsou navázané pomocné třídy club-cards, club-scroller, club-grid,
+ * club-list a club-stack (pole „CSS class“ v nastavení view).
+ */
+#}
+{%
+  set classes = [
+    'view',
+    'view-' ~ id|clean_class,
+    'view-display-' ~ display_id|clean_class,
+    dom_id ? 'js-view-dom-id-' ~ dom_id,
+  ]|merge(is_page ? ['mx-auto', 'max-w-7xl', 'px-4', 'sm:px-6', 'py-12'] : [])
+%}
+<div{{ attributes.addClass(classes) }}>
+  {{ title_prefix }}
+  {{ title }}
+  {{ title_suffix }}
+
+  {% if header %}
+    <header class="view-header">{{ header }}</header>
+  {% endif %}
+
+  {% if club_subscribe %}<div class="mb-8 max-w-4xl">{{ club_subscribe }}</div>{% endif %}
+  {{ exposed }}
+  {{ attachment_before }}
+
+  {% if rows -%}
+    <div class="view-content">{{ rows }}</div>
+  {%- elseif empty -%}
+    <div class="view-empty text-muted">{{ empty }}</div>
+  {%- endif %}
+  {{ pager }}
+
+  {{ attachment_after }}
+  {{ more }}
+
+  {% if footer %}
+    <footer class="view-footer">{{ footer }}</footer>
+  {% endif %}
+
+  {{ feed_icons }}
+</div>

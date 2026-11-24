@@ -1,7 +1,0 @@
-name: SKBL module
-description: Base module for web skbl.cz
-
-type: module
-core_version_requirement: ^10 || ^11
-dependencies:
-  - openid_connect:openid_connect

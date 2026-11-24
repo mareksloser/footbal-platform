@@ -1,0 +1,12 @@
+<div class="py-2.5">
+  <div class="flex justify-between gap-3">
+    <dt class="text-muted">{{ club.role }}</dt>
+    <dd class="font-semibold text-right">{{ club.name }}</dd>
+  </div>
+  {% if club.phone or club.email %}
+    <p class="mt-0.5 flex flex-wrap justify-end gap-x-3 text-xs">
+      {% if club.phone %}<a href="tel:{{ club.phone_href }}" class="text-redink tnum hover:underline">{{ club.phone_display }}</a>{% endif %}
+      {% if club.email %}<a href="mailto:{{ club.email }}" class="text-redink hover:underline">{{ club.email }}</a>{% endif %}
+    </p>
+  {% endif %}
+</div>

@@ -1,0 +1,11 @@
+global:
+  css:
+    base:
+      'https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap': { type: external, minified: true }
+    theme:
+      css/club.css: { minified: true }
+  js:
+    js/club.js: {}
+  dependencies:
+    - core/drupal
+    - core/once

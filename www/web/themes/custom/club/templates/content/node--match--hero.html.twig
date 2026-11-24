@@ -1,0 +1,20 @@
+{# Příští zápas v hero sekci (view mode „hero“). #}
+<div{{ attributes }}>
+  {{ title_prefix }}{{ title_suffix }}
+  {{ include('club:match-hero', {
+    when: club.when,
+    kicker: club.kicker,
+    is_home: club.is_home,
+    club_name: club.us_name,
+    club_logo: club.club_logo,
+    partner_short: club.partner_short,
+    opponent_name: club.opponent_name,
+    opponent_logo: club.opponent_logo,
+    opponent_initials: club.opponent_initials,
+    time: club.date.time,
+    date_long: club.date.long,
+    venue: club.venue,
+    competition: club.competition,
+    url: url,
+  }, with_context = false) }}
+</div>

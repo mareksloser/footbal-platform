@@ -1,0 +1,17 @@
+{#
+/**
+ * @file
+ * Partner jako dlaždice s logem (pás na úvodní stránce).
+ * Loga jsou šedá, při najetí barevná.
+ */
+#}
+{% set tag = club.url ? 'a' : 'div' %}
+<{{ tag }}{% if club.url %} href="{{ club.url }}" target="_blank" rel="noopener"{% endif %}{{ attributes.addClass('group', 'h-28', 'grid', 'place-items-center', 'p-5', 'bg-card', 'border', 'border-line', 'rounded-xl', club.url ? 'hover:border-ink/30') }}>
+  {{ title_prefix }}{{ title_suffix }}
+  {% if club.logo_url %}
+    <img src="{{ club.logo_url }}" alt="{{ club.name }}" loading="lazy" class="max-h-14 max-w-full w-auto object-contain grayscale opacity-70 transition group-hover:grayscale-0 group-hover:opacity-100">
+  {% else %}
+    <span class="cond text-xl font-bold text-muted text-center group-hover:text-ink">{{ club.name }}</span>
+  {% endif %}
+  {% if club.url %}<span class="sr-only"> (otevře web partnera)</span>{% endif %}
+</{{ tag }}>

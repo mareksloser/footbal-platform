@@ -1,7 +1,0 @@
-{# Tréninky v bočním panelu stránky týmu. Název pole = nadpis karty. #}
-<div{{ attributes.addClass('skbl-card') }}>
-  {% if not label_hidden %}<h2{{ title_attributes.addClass('cond', 'text-2xl', 'font-bold', 'mb-2') }}>{{ label }}</h2>{% endif %}
-  <ul class="divide-y divide-line text-sm">
-    {% for item in items %}{{ item.content }}{% endfor %}
-  </ul>
-</div>

@@ -1,0 +1,18 @@
+name: Club
+type: theme
+description: 'Téma klubového webu Footbal Platform (Tailwind CSS 4, SDC komponenty, podpora filtrování podle týmu ze club_core).'
+package: 'Footbal Platform'
+core_version_requirement: ^10.3 || ^11
+base theme: stable9
+logo: logo.svg
+libraries:
+  - club/global
+regions:
+  ticker: 'Lišta akcí (nahoře)'
+  header_left: 'Hlavička – menu vlevo'
+  header_right: 'Hlavička – menu vpravo'
+  switcher: 'Přepínač týmů'
+  highlighted: 'Zvýrazněné (zprávy)'
+  page_header: 'Záhlaví stránky (drobečky, nadpis)'
+  content: 'Obsah'
+  footer: 'Patička'

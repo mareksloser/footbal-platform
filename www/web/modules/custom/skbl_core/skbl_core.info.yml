@@ -1,9 +1,0 @@
-name: 'SKBL Core'
-type: module
-description: 'Kontext aktuálního týmu, přepínač týmů a Views argument pro filtrování obsahu podle týmu.'
-package: 'SK Baník Libušín'
-core_version_requirement: ^10.3 || ^11
-dependencies:
-  - drupal:node
-  - drupal:views
-  - drupal:options

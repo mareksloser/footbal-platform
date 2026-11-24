@@ -1,0 +1,14 @@
+{#
+/**
+ * @file
+ * Tým v plném zobrazení = úvodní stránka i /tym/u15.
+ * Obsah skládá Layout Builder (výchozí rozvržení typu Tým).
+ */
+#}
+<div{{ attributes }}>
+  {{ title_prefix }}{{ title_suffix }}
+  {% if club.merged %}
+    {{ include('club:coop-banner', {team_name: label, club_name: club_brand.name, partner_name: club.partner_name, partner_short: club.partner_short}, with_context = false) }}
+  {% endif %}
+  {{ content }}
+</div>

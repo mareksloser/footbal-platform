@@ -18,7 +18,7 @@ final class SettingsRegistry
     {
         foreach ([
             new SettingDefinition('siteTitle', 'string', 'Match Video Review', public: true, maxLength: 80, required: true),
-            new SettingDefinition('clubName', 'string', 'SK Baník Libušín', public: true, maxLength: 80, required: true),
+            new SettingDefinition('clubName', 'string', 'Footbal Platform', public: true, maxLength: 80, required: true),
             new SettingDefinition('accentColor', 'color', '#1fbf75', public: true),
             // Text on accent-filled buttons: auto = whichever of white/dark reads better
             new SettingDefinition('accentInk', 'enum', 'auto', public: true, options: ['auto', 'light', 'dark']),

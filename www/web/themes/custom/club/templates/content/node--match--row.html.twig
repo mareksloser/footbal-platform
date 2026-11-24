@@ -1,0 +1,41 @@
+{#
+/**
+ * @file
+ * Zápas jako řádek v archivu výsledků (view mode „row“).
+ */
+#}
+{% set badge = {
+  'V': ['Výhra', 'bg-win text-white'],
+  'P': ['Prohra', 'bg-red text-white'],
+  'R': ['Remíza', 'bg-draw text-white'],
+}[club.result] ?? null %}
+<div{{ attributes }}>
+  {{ title_prefix }}{{ title_suffix }}
+  <a href="{{ url }}" class="group grid grid-cols-[3.5rem_1fr_auto] sm:grid-cols-[4.5rem_1fr_auto_auto] items-center gap-x-4 py-3.5 px-3 -mx-3 rounded-lg hover:bg-surface">
+    <div class="text-sm tnum leading-tight">
+      <span class="font-semibold">{{ club.date.day_month }}</span>
+      <span class="block text-xs text-muted">{{ club.date.weekday }}, {{ club.is_home ? 'doma' : 'venku' }}</span>
+    </div>
+    <div class="min-w-0">
+      <p class="truncate">
+        <span class="{{ club.is_home ? 'font-semibold' }}">{{ club.home_name }}</span>
+        <span class="text-muted">–</span>
+        <span class="{{ not club.is_home ? 'font-semibold' }}">{{ club.away_name }}</span>
+      </p>
+      {% if club.show_team or club.competition %}
+        <p class="mt-0.5 flex items-center gap-2 text-xs text-muted min-w-0">
+          {% if club.show_team %}{{ include('club:team-chip', {label: club.team_label, merged: club.team_merged}, with_context = false) }}{% endif %}
+          {% if club.competition %}<span class="truncate">{{ club.competition }}</span>{% endif %}
+        </p>
+      {% endif %}
+    </div>
+    <div class="cond text-2xl sm:text-3xl font-bold tnum group-hover:text-redink">
+      {% if club.played %}{{ club.home_score }}:{{ club.away_score }}{% else %}–{% endif %}
+    </div>
+    {% if badge %}
+      <span class="max-sm:hidden h-7 w-7 grid place-items-center rounded text-xs font-bold {{ badge[1] }}" title="{{ badge[0] }}">{{ club.result }}</span>
+    {% else %}
+      <span class="max-sm:hidden w-7"></span>
+    {% endif %}
+  </a>
+</div>

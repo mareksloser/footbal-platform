@@ -55,7 +55,7 @@ export function MatchForm({ initial, submitLabel, pending, error, cancelTo, onSu
     <Panel className="mt-5 p-5">
       <form onSubmit={submit} className="grid gap-4">
         <Field label="Název">
-          <Input required value={title} onChange={(e) => setTitle(e.target.value)} placeholder="SK Baník Libušín – FK Lipová" />
+          <Input required value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Footbal Platform – FK Lipová" />
         </Field>
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="Datum zápasu">
@@ -108,7 +108,7 @@ export function MatchForm({ initial, submitLabel, pending, error, cancelTo, onSu
               required
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder={source === 'veo' ? 'https://app.veo.co/matches/…/#t=41:51' : source === 'youtube' ? 'https://youtu.be/…' : 'https://video.banik-libusin.cz/2026/zapas.mp4'}
+              placeholder={source === 'veo' ? 'https://app.veo.co/matches/…/#t=41:51' : source === 'youtube' ? 'https://youtu.be/…' : 'https://video.example.cz/2026/zapas.mp4'}
             />
           </Field>
         ) : null}

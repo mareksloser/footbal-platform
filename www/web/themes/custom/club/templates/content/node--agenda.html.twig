@@ -1,0 +1,41 @@
+{#
+/**
+ * @file
+ * Položka kalendáře (view mode „agenda“) pro Zápas, Turnaj i Akci.
+ * Data: club z preprocessu daného typu obsahu.
+ */
+#}
+{% set bundle = node.bundle %}
+{% if bundle == 'match' %}
+  {% set kind = 'Zápas, ' ~ (club.is_home ? 'doma' : 'venku') %}
+  {% set heading = club.home_name ~ ' – ' ~ club.away_name %}
+  {% set place = club.venue ~ (club.venue and club.competition ? ' · ') ~ club.competition %}
+{% elseif bundle == 'tournament' %}
+  {% set kind = 'Turnaj' %}
+  {% set heading = label %}
+  {% set place = club.venue %}
+{% else %}
+  {% set kind = 'Akce' %}
+  {% set heading = label %}
+  {% set place = club.note %}
+{% endif %}
+<article{{ attributes.addClass('group', 'relative', 'grid', 'grid-cols-[3.5rem_1fr]', 'sm:grid-cols-[4rem_5.5rem_1fr_auto]', 'gap-x-4', 'gap-y-1', 'py-4') }}>
+  {{ title_prefix }}{{ title_suffix }}
+  <div class="text-center sm:row-span-1 row-span-3">
+    <div class="cond text-3xl font-bold leading-none tnum">{{ club.date.day }}</div>
+    <div class="text-xs text-muted mt-1">{{ club.date.weekday }}</div>
+  </div>
+  <div class="text-sm sm:pt-0.5">
+    <span class="tnum font-semibold">{{ club.date.time|default('celý den') }}</span>
+    <span class="sm:block text-xs {{ bundle == 'match' ? 'text-redink font-semibold' : 'text-muted' }}"><span class="sm:hidden"> · </span>{{ kind }}</span>
+  </div>
+  <div class="min-w-0 max-sm:col-start-2">
+    <a href="{{ url }}" class="font-semibold leading-snug group-hover:text-redink after:absolute after:inset-0">{{ heading }}</a>
+    {% if place %}<p class="text-sm text-muted">{{ place }}</p>{% endif %}
+  </div>
+  {% if club.show_team %}
+    <div class="max-sm:col-start-2 sm:pt-0.5">
+      {{ include('club:team-chip', {label: club.team_label, merged: club.team_merged, club: club.team_is_club}, with_context = false) }}
+    </div>
+  {% endif %}
+</article>

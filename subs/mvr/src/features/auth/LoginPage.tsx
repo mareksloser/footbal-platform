@@ -90,9 +90,9 @@ function DemoLogin({ redirect }: { redirect: string | null }) {
       </div>
       <div className="mt-6 grid gap-2">
         <p className="text-center text-sm text-muted">Ukázkové účty</p>
-        <Button onClick={() => signInAs('trener@banik.cz')}>Přihlásit jako trenér</Button>
-        <Button onClick={() => signInAs('hrac@banik.cz')}>Přihlásit jako hráč A-týmu</Button>
-        <Button onClick={() => signInAs('view@banik.cz')}>Přihlásit jako náhled (vše, jen ke čtení)</Button>
+        <Button onClick={() => signInAs('trener@example.cz')}>Přihlásit jako trenér</Button>
+        <Button onClick={() => signInAs('hrac@example.cz')}>Přihlásit jako hráč A-týmu</Button>
+        <Button onClick={() => signInAs('view@example.cz')}>Přihlásit jako náhled (vše, jen ke čtení)</Button>
       </div>
       {signIn.error && <div className="mt-4"><ErrorNote error={signIn.error} /></div>}
     </div>

@@ -1,0 +1,18 @@
+{#
+/**
+ * @file
+ * Karta týmu na stránce /tymy (view mode „card“). Vede na stránku O týmu.
+ */
+#}
+<a href="{{ club_card.url }}"{{ attributes.addClass('group', 'relative', 'block', 'h-full', 'bg-card', 'border', 'border-line', 'rounded-xl', 'p-5', 'pl-6', 'overflow-hidden', 'hover:border-ink/30') }}>
+  {{ title_prefix }}{{ title_suffix }}
+  <span aria-hidden="true" class="absolute left-0 inset-y-0 w-1 {{ club_card.merged ? 'bg-blue' : 'bg-red' }}"></span>
+  <h3 class="cond text-2xl font-bold leading-tight group-hover:text-redink">{{ label }}</h3>
+  {% if club_card.competition %}<p class="text-sm text-muted mt-1">{{ club_card.competition }}</p>{% endif %}
+  {% if club_card.merged %}<p class="text-sm text-blueink font-semibold mt-2">Společně se {{ club_card.partner_name }}</p>{% endif %}
+  <dl class="mt-4 text-sm grid grid-cols-[4.5rem_1fr] gap-y-1">
+    {% if club_card.coach %}<dt class="text-muted">Trenér</dt><dd>{{ club_card.coach }}</dd>{% endif %}
+    <dt class="text-muted">Hráčů</dt><dd class="tnum">{{ club_card.players }}</dd>
+    {% if club_card.next %}<dt class="text-muted">Příště</dt><dd>{{ club_card.next }}</dd>{% endif %}
+  </dl>
+</a>

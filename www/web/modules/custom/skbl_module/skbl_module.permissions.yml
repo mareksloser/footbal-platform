@@ -1,3 +1,0 @@
-view skbl token debug:
-  title: 'View Team Auth token debug page'
-  restrict access: true

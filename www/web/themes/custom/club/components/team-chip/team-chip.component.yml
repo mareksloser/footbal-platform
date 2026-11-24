@@ -1,0 +1,10 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Štítek týmu
+status: stable
+description: 'Malý štítek s krátkým názvem týmu. Modrý u společných týmů s partnerským klubem.'
+props:
+  type: object
+  properties:
+    label: { type: string, title: 'Text' }
+    merged: { type: boolean, title: 'Společný tým' }
+    club: { type: boolean, title: 'Klubová položka' }

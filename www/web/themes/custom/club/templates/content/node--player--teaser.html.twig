@@ -1,0 +1,14 @@
+{# Karta hráče v posuvné soupisce. #}
+<div{{ attributes }}>
+  {{ title_prefix }}{{ title_suffix }}
+  {{ include('club:player-card', {
+    first_name: club.first_name,
+    last_name: club.last_name,
+    number: club.number,
+    position: club.position,
+    url: url,
+    photo_url: club.photo_url,
+    partner: club.partner,
+    partner_label: club.partner_label,
+  }, with_context = false) }}
+</div>

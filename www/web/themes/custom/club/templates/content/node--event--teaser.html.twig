@@ -1,0 +1,14 @@
+<div{{ attributes }}>
+  {{ title_prefix }}{{ title_suffix }}
+  {{ include('club:event-item', {
+    url: url,
+    title: label,
+    day: club.date.day,
+    month: club.date.month_short,
+    note: club.note,
+    team_label: club.team_label,
+    team_merged: club.team_merged,
+    team_is_club: club.team_is_club,
+    show_team: club.show_team,
+  }, with_context = false) }}
+</div>

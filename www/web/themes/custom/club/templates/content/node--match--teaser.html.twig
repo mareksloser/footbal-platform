@@ -1,0 +1,17 @@
+{# Výsledek v mřížce „Poslední výsledky“. #}
+<div{{ attributes.addClass('h-full') }}>
+  {{ title_prefix }}{{ title_suffix }}
+  {{ include('club:result-card', {
+    url: url,
+    date: club.date.short,
+    is_home: club.is_home,
+    home_name: club.home_name,
+    away_name: club.away_name,
+    home_score: club.home_score,
+    away_score: club.away_score,
+    result: club.result,
+    team_label: club.team_label,
+    team_merged: club.team_merged,
+    show_team: club.show_team,
+  }, with_context = false) }}
+</div>

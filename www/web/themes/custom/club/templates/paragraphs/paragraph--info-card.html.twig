@@ -1,0 +1,6 @@
+{# Informační karta do bočního panelu (Areál, Nábor…). #}
+<div{{ attributes.addClass('club-card') }}>
+  {% if club.title %}<h2 class="cond text-2xl font-bold mb-2">{{ club.title }}</h2>{% endif %}
+  <div class="text-sm leading-relaxed [&_ul]:mt-3 [&_ul]:space-y-1 [&_ul]:text-muted [&_p+p]:mt-2 [&_a]:text-redink">{{ content.field_text }}</div>
+  {% if club.link %}<a href="{{ club.link.url }}" class="inline-block mt-3 text-sm font-semibold text-redink hover:underline">{{ club.link.title }}</a>{% endif %}
+</div>

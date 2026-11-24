@@ -1,7 +1,0 @@
-skbl_module.token_debug:
-  path: '/admin/reports/skbl-token'
-  defaults:
-    _controller: '\Drupal\skbl_module\Controller\TokenDebugController::view'
-    _title: 'Team Auth token'
-  requirements:
-    _permission: 'view skbl token debug'

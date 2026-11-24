@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Mvr\Video;
 
-/** Pure parser for links like https://app.veo.co/matches/20261024-banik/#t=41:51 */
+/** Pure parser for links like https://app.veo.co/matches/20261024-fc-domaci/#t=41:51 */
 final class VeoUrlParser
 {
     public function isVeo(string $url): bool

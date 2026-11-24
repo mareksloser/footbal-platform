@@ -1,0 +1,7 @@
+name: Club module
+description: Base module for the Footbal Platform club website (OpenID Connect integration)
+
+type: module
+core_version_requirement: ^10 || ^11
+dependencies:
+  - openid_connect:openid_connect

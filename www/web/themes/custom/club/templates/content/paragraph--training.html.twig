@@ -1,0 +1,5 @@
+<li class="py-2.5 flex items-baseline justify-between gap-3">
+  <span>{{ club.day }}</span>
+  {% if club.venue %}<span class="text-muted text-xs">{{ club.venue }}</span>{% endif %}
+  <span class="tnum font-semibold whitespace-nowrap">{{ club.from }}–{{ club.to }}</span>
+</li>

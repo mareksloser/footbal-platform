@@ -1,0 +1,9 @@
+{#
+  Obsah bez bočních okrajů – pro posuvné pásy (soupiska).
+  Nadpisy bloků se odsazují samy přes třídu .club-wide v CSS.
+#}
+{% if content %}
+  <section{{ attributes.addClass('club-wide', 'mx-auto', 'max-w-7xl', 'py-12', 'sm:py-16') }}>
+    <div{{ region_attributes.main.addClass('space-y-12') }}>{{ content.main }}</div>
+  </section>
+{% endif %}

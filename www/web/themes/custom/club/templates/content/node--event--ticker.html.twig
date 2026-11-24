@@ -1,0 +1,5 @@
+{# Jedna akce v červené liště nahoře (view mode „ticker“). #}
+<a href="{{ url }}"{{ attributes.addClass('block', 'truncate', 'hover:underline', 'underline-offset-4') }}>
+  {{ title_prefix }}{{ title_suffix }}
+  <span class="font-semibold tnum">{{ club.date.short }}</span><span class="mx-2 text-white/60" aria-hidden="true">|</span>{{ label }}
+</a>

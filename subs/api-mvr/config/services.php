@@ -125,7 +125,7 @@ return static function (Container $c): void {
         $c->get(Repository\UserRepository::class),
         $c->get(AccessPolicy::class),
     ));
-    // Club website (skbl.cz): videos from the website's video library
+    // Club website (Drupal, module club_core): videos from the website's video library
     $c->set(Website\WebsiteFeed::class, fn () => new Website\HttpWebsiteFeed(
         Env::get('WEBSITE_FEED_URL', ''),
         Env::get('WEBSITE_FEED_TOKEN', ''),

@@ -1,0 +1,13 @@
+{
+  "name": "club-theme",
+  "private": true,
+  "description": "Build CSS pro téma Club (Tailwind CSS 4).",
+  "scripts": {
+    "build": "tailwindcss -i src/club.css -o css/club.css --minify",
+    "watch": "tailwindcss -i src/club.css -o css/club.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "4.3.5",
+    "tailwindcss": "4.3.5"
+  }
+}

@@ -1,0 +1,15 @@
+<div{{ attributes.addClass('h-full') }}>
+  {{ title_prefix }}{{ title_suffix }}
+  {{ include('club:result-card', {
+    url: url,
+    date: club.date.short,
+    is_home: true,
+    home_name: '',
+    away_name: '',
+    tournament: label,
+    placement: club.placement,
+    team_label: club.team_label,
+    team_merged: club.team_merged,
+    show_team: club.show_team,
+  }, with_context = false) }}
+</div>

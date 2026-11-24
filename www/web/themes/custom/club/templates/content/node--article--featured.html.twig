@@ -1,0 +1,5 @@
+{# Hlavní aktualita (view mode „featured“) – obrázek vedle textu. #}
+<div{{ attributes }}>
+  {{ title_prefix }}{{ title_suffix }}
+  {{ include('club:article-card', club|merge({featured: true}), with_context = false) }}
+</div>

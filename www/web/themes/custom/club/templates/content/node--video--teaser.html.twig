@@ -1,0 +1,4 @@
+<div{{ attributes }}>
+  {{ title_prefix }}{{ title_suffix }}
+  {{ include('club:video-card', club|merge({featured: false}), with_context = false) }}
+</div>

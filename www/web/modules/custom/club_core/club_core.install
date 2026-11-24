@@ -1,0 +1,98 @@
+<?php
+
+/**
+ * @file
+ * Instalace modulu Club Core – založení výchozích týmů.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function club_core_install(bool $is_syncing): void {
+  // Při config importu nic nezakládáme, obsah se nesynchronizuje.
+  if ($is_syncing) {
+    return;
+  }
+  \Drupal::messenger()->addStatus(_club_core_create_default_teams());
+}
+
+/**
+ * Založí výchozí týmy (pro už nainstalovaný modul).
+ */
+function club_core_update_10001(): string {
+  return _club_core_create_default_teams();
+}
+
+/**
+ * Vytvoří chybějící nody typu Tým a nastaví „Celý klub“ jako úvodní stránku.
+ *
+ * Existující týmy (podle field_slug) přeskočí, lze tedy spustit opakovaně.
+ */
+function _club_core_create_default_teams(): string {
+  $entity_type_manager = \Drupal::entityTypeManager();
+
+  if (!$entity_type_manager->getStorage('node_type')->load('team')) {
+    return 'Typ obsahu Tým (team) neexistuje, týmy nebyly vytvořeny.';
+  }
+  $fields = \Drupal::service('entity_field.manager')->getFieldDefinitions('node', 'team');
+  foreach (['field_slug', 'field_short_title', 'field_is_club', 'field_weight'] as $field) {
+    if (!isset($fields[$field])) {
+      return sprintf('U typu Tým chybí pole %s, týmy nebyly vytvořeny.', $field);
+    }
+  }
+
+  // [název, krátký název, zkratka, pořadí, celý klub]
+  $teams = [
+    ['Celý klub', 'Klub', 'klub', 0, TRUE],
+    ['Muži A', 'A-tým', 'a-tym', 1, FALSE],
+    ['Muži B', 'B-tým', 'b-tym', 2, FALSE],
+    ['Dorost U19', 'U19', 'u19', 3, FALSE],
+    ['Starší žáci U15', 'U15', 'u15', 4, FALSE],
+    ['Mladší žáci U13', 'U13', 'u13', 5, FALSE],
+    ['Starší přípravka U11', 'U11', 'u11', 6, FALSE],
+    ['Mladší přípravka U9', 'U9', 'u9', 7, FALSE],
+  ];
+
+  $storage = $entity_type_manager->getStorage('node');
+  $created = 0;
+  $club = NULL;
+
+  foreach ($teams as [$title, $short, $slug, $weight, $is_club]) {
+    $existing = $storage->loadByProperties(['type' => 'team', 'field_slug' => $slug]);
+    $node = $existing ? reset($existing) : NULL;
+    if (!$node) {
+      $node = $storage->create([
+        'type' => 'team',
+        'title' => $title,
+        'field_short_title' => $short,
+        'field_slug' => $slug,
+        'field_weight' => $weight,
+        'field_is_club' => $is_club,
+        'status' => 1,
+        'uid' => 1,
+      ]);
+      $node->save();
+      $created++;
+    }
+    if ($is_club) {
+      $club = $node;
+    }
+  }
+
+  $message = sprintf('Vytvořeno týmů: %d (existující přeskočeny).', $created);
+
+  // Úvodní stránku přepneme jen tehdy, pokud je pořád výchozí.
+  if ($club) {
+    $config = \Drupal::configFactory()->getEditable('system.site');
+    $front = (string) $config->get('page.front');
+    if (in_array($front, ['', '/node', '/user/login'], TRUE)) {
+      $config->set('page.front', '/node/' . $club->id())->save();
+      $message .= sprintf(' Úvodní stránka nastavena na „Celý klub“ (/node/%d).', $club->id());
+    }
+    else {
+      $message .= sprintf(' Úvodní stránka zůstala %s, „Celý klub“ je /node/%d.', $front, $club->id());
+    }
+  }
+
+  return $message;
+}

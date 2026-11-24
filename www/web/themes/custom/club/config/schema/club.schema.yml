@@ -1,0 +1,35 @@
+club.settings:
+  type: theme_settings
+  label: 'Nastavení tématu Club'
+  mapping:
+    club_title: { type: label, label: 'Název klubu' }
+    club_short_name: { type: label, label: 'Krátký název klubu' }
+    cta_label: { type: label, label: 'Text tlačítka' }
+    cta_url: { type: string, label: 'Odkaz tlačítka' }
+    cta_label_mobile: { type: label, label: 'Text tlačítka na mobilu' }
+    club_name: { type: label, label: 'Název spolku' }
+    club_address: { type: text, label: 'Adresa' }
+    club_email: { type: email, label: 'E-mail' }
+    footer_note: { type: label, label: 'Poznámka v patičce' }
+    merged_label: { type: label, label: 'Štítek společného týmu v menu' }
+    colors:
+      type: mapping
+      label: 'Barvy'
+      mapping:
+        light:
+          type: club.colors
+          label: 'Světlý režim'
+        dark:
+          type: club.colors
+          label: 'Tmavý režim'
+
+club.colors:
+  type: mapping
+  label: 'Barvy režimu'
+  mapping:
+    red: { type: color_hex, label: 'Hlavní barva' }
+    redink: { type: color_hex, label: 'Hlavní barva – text' }
+    blue: { type: color_hex, label: 'Doplňková barva' }
+    blueink: { type: color_hex, label: 'Doplňková barva – text' }
+    win: { type: color_hex, label: 'Výhra' }
+    draw: { type: color_hex, label: 'Remíza' }

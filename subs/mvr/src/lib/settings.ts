@@ -6,7 +6,7 @@ import type { AdminSetting, PublicSettings } from './types';
  */
 export const DEFAULT_SETTINGS: PublicSettings = {
   siteTitle: 'Match Video Review',
-  clubName: 'SK Baník Libušín',
+  clubName: 'Footbal Platform',
   accentColor: '#1fbf75',
   accentInk: 'auto',
   defaultTheme: 'system',
