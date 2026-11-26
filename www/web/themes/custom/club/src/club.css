@@ -1,0 +1,266 @@
+/*
+ * club – vstupní soubor pro Tailwind CSS 4.
+ * Build:  npm install && npm run build   (výstup css/club.css)
+ * Vývoj:  npm run watch
+ */
+@import "tailwindcss";
+
+/* Kde Tailwind hledá třídy. */
+@source "../templates";
+@source "../components";
+@source "../layouts";
+@source "../club.theme";
+@source "../../../../modules/custom/club_core/templates";
+
+/* Barvy z návrhu – mění se se světlým/tmavým režimem přes proměnné níže. */
+@theme inline {
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-white: #fff;
+  --color-black: #000;
+  --color-bg: rgb(var(--club-bg));
+  --color-surface: rgb(var(--club-surface));
+  --color-card: rgb(var(--club-card));
+  --color-ink: rgb(var(--club-ink));
+  --color-muted: rgb(var(--club-muted));
+  --color-line: rgb(var(--club-line));
+  --color-red: rgb(var(--club-red));
+  --color-redink: rgb(var(--club-redink));
+  --color-blue: rgb(var(--club-blue));
+  --color-blueink: rgb(var(--club-blueink));
+  --color-win: rgb(var(--club-win));
+  --color-draw: rgb(var(--club-draw));
+
+  --font-sans: "Archivo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+@layer base {
+  :root {
+    --club-bg: 255 255 255; --club-surface: 244 245 247; --club-card: 255 255 255;
+    --club-ink: 27 30 35; --club-muted: 96 102 112; --club-line: 225 227 231;
+    --club-red: 211 1 43; --club-redink: 190 0 38; --club-blue: 28 78 168; --club-blueink: 28 78 168;
+    --club-win: 22 128 61; --club-draw: 120 126 136;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --club-bg: 18 20 24; --club-surface: 25 28 33; --club-card: 31 34 40;
+      --club-ink: 236 237 240; --club-muted: 158 164 172; --club-line: 52 56 63;
+      --club-redink: 255 104 124; --club-blue: 52 104 200; --club-blueink: 128 166 240;
+      --club-win: 34 160 80; --club-draw: 110 116 126;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --club-bg: 18 20 24; --club-surface: 25 28 33; --club-card: 31 34 40;
+    --club-ink: 236 237 240; --club-muted: 158 164 172; --club-line: 52 56 63;
+    --club-redink: 255 104 124; --club-blue: 52 104 200; --club-blueink: 128 166 240;
+    --club-win: 34 160 80; --club-draw: 110 116 126;
+    color-scheme: dark;
+  }
+
+  html { scroll-behavior: smooth; scroll-padding-top: calc(var(--drupal-displace-offset-top, 0px) + 9.5rem); }
+  :focus-visible { outline: 2px solid var(--color-red); outline-offset: 2px; border-radius: 4px; }
+  button { cursor: pointer; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+/* Vlastní utility z návrhu. */
+@utility cond { font-stretch: 70%; }
+@utility semi { font-stretch: 88%; }
+@utility tnum { font-variant-numeric: tabular-nums; }
+@utility shield { clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%); }
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+@utility hatch { background-image: repeating-linear-gradient(135deg, rgb(var(--club-muted) / .22) 0 6px, transparent 6px 12px); }
+
+@layer components {
+  /* Přepínač týmů – zeslabený pravý okraj při přetečení. */
+  .club-fade-x {
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 48px), transparent);
+    mask-image: linear-gradient(90deg, #000 calc(100% - 48px), transparent);
+  }
+
+  /* Menu v hlavičce – desktop. */
+  .club-dd { visibility: hidden; opacity: 0; transform: translateY(-4px); transition: opacity .15s, transform .15s, visibility .15s; }
+  .club-nav__item:hover > .club-dd,
+  .club-nav__item:focus-within > .club-dd,
+  .club-nav__item.is-open > .club-dd { visibility: visible; opacity: 1; transform: none; }
+  .club-nav__toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+
+  /* Boční panel (kalendář akcí v hero). */
+  .club-panel { background: var(--color-card); border: 1px solid var(--color-line); border-radius: .75rem; padding: 1.25rem; box-shadow: 0 1px 2px rgb(0 0 0 / .05); }
+  @media (width >= 40rem) { .club-panel { padding: 1.5rem; } }
+  .club-panel .club-block__title { font-size: 1.5rem; margin-bottom: 1rem; }
+  .club-panel .view-content > * + * { border-top: 1px solid var(--color-line); }
+
+  /* Karta v bočním panelu (Layout „Obsah s bočním panelem“). */
+  .club-card { background: var(--color-card); border: 1px solid var(--color-line); border-radius: .75rem; padding: 1.25rem; }
+  .club-aside .club-block:not(:has(.club-card)) { background: var(--color-card); border: 1px solid var(--color-line); border-radius: .75rem; padding: 1.25rem; }
+  .club-aside .club-block__title { font-size: 1.5rem; margin-bottom: .5rem; }
+  .club-roster-group + .club-roster-group { margin-top: 2rem; }
+
+  /* --- Pomocné třídy pro Views (pole „CSS class“ v nastavení view) --- */
+
+  /* Posuvný pás karet (soupiska). */
+  .club-scroller .view-content {
+    display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory;
+    padding-bottom: 1rem; scrollbar-width: none;
+  }
+  .club-scroller .view-content::-webkit-scrollbar { display: none; }
+  .club-scroller .view-content > * { flex: 0 0 10rem; scroll-snap-align: start; }
+  @media (width >= 40rem) {
+    .club-scroller .view-content { gap: 1.25rem; }
+    .club-scroller .view-content > * { flex-basis: 12rem; }
+  }
+  .club-scroller__nav { display: flex; justify-content: flex-end; gap: .5rem; margin: -4.25rem 0 1.5rem; }
+  .club-scroller__nav button { height: 2.5rem; width: 2.5rem; display: grid; place-items: center; border-radius: 9999px; border: 1px solid var(--color-line); }
+  .club-scroller__nav button:hover { background: var(--color-surface); }
+
+  /* Mřížka výsledků oddělená linkami. */
+  .club-cards .view-content {
+    display: grid; gap: 1px; background: var(--color-line); border: 1px solid var(--color-line);
+    border-radius: .75rem; overflow: hidden; grid-template-columns: 1fr;
+  }
+  @media (width >= 40rem) { .club-cards .view-content { grid-template-columns: repeat(2, 1fr); } }
+  @media (width >= 64rem) { .club-cards .view-content { grid-template-columns: repeat(3, 1fr); } }
+
+  /* Mřížka karet (videotéka, aktuality). */
+  .club-grid .view-content { display: grid; gap: 2.5rem 1.5rem; grid-template-columns: 1fr; }
+  @media (width >= 40rem) { .club-grid .view-content { grid-template-columns: repeat(2, 1fr); } }
+  @media (width >= 64rem) { .club-grid .view-content { grid-template-columns: repeat(3, 1fr); } }
+
+  /* Seznam s linkami (kalendář, další videa). */
+  .club-list .view-content > * + * { border-top: 1px solid var(--color-line); }
+  .club-stack .view-content { display: flex; flex-direction: column; gap: 1rem; }
+
+  /* Filtry jako čipy (Better Exposed Filters, formát Odkazy) – kalendář, archiv,
+     videotéka. Pro jiné view stačí přidat CSS třídu „club-filters“. */
+  :is(.view-calendar, .club-months, .club-filters) .views-exposed-form { margin-bottom: 2rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end; }
+  :is(.view-calendar, .club-months, .club-filters) .views-exposed-form .form-item { margin: 0; }
+  :is(.view-calendar, .club-filters) .views-exposed-form .form-item > label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  :is(.view-calendar, .club-months, .club-filters) .views-exposed-form .form-select { width: auto; min-width: 10rem; }
+  :is(.view-calendar, .club-months, .club-filters) .bef-links ul { display: flex; flex-wrap: wrap; gap: .5rem; }
+  :is(.view-calendar, .club-months, .club-filters) .bef-links a {
+    display: inline-flex; align-items: center; height: 2.25rem; padding: 0 .875rem;
+    border: 1px solid var(--color-line); border-radius: .375rem; font-size: .875rem; font-weight: 600;
+  }
+  :is(.view-calendar, .club-months, .club-filters) .bef-links a:hover { border-color: rgb(var(--club-ink) / .4); }
+  :is(.view-calendar, .club-months, .club-filters) .bef-links a.bef-link--selected { background: var(--color-ink); color: var(--color-bg); border-color: var(--color-ink); }
+  .view-calendar .view-content, .view-calendar .view-empty, .view-calendar .pager { max-width: 56rem; }
+  .club-months .view-content, .club-months .view-empty, .club-months .pager { max-width: 56rem; }
+
+
+  /* Stránkování (stable9: nav.pager > ul.pager__items > li.pager__item). */
+  .pager { margin-top: 3rem; }
+  .pager__items { display: flex; flex-wrap: wrap; gap: .375rem; align-items: center; }
+  .pager__item a, .pager__item.is-active { display: inline-flex; align-items: center; justify-content: center; min-width: 2.5rem; height: 2.5rem; padding: 0 .75rem; border-radius: .5rem; font-weight: 600; font-size: .875rem; }
+  .pager__item a { border: 1px solid var(--color-line); }
+  .pager__item a:hover { background: var(--color-surface); }
+  .pager__item.is-active { background: var(--color-ink); color: var(--color-bg); }
+  .pager__item.is-active a { border: 0; min-width: 0; height: auto; padding: 0; color: inherit; }
+  .pager__item--ellipsis { color: var(--color-muted); padding: 0 .25rem; }
+
+  /* Odkaz „více“ ve views (club.js ho přesune do hlavičky bloku vedle nadpisu). */
+  .more-link { margin-top: 1rem; font-size: .875rem; font-weight: 600; }
+  /* Podnadpis z hlavičky view (Globální: Textová oblast). */
+  .club-block > .club-block__head ~ * .view-header, .club-block > .club-block__title ~ * .view-header { margin-top: -1.25rem; margin-bottom: 1.5rem; color: var(--color-muted); }
+  .more-link a { color: var(--color-redink); }
+  .more-link a:hover { text-decoration: underline; }
+
+  /* Sekce přes celou šířku – nadpisy a pásy odsazené jako kontejner. */
+  .club-wide .club-block__title,
+  .club-wide .club-scroller__nav,
+  .club-wide .view-header,
+  .club-wide .more-link { padding-inline: 1rem; }
+  .club-wide .club-scroller .view-content { padding-inline: 1rem; scroll-padding-inline: 1rem; }
+  .club-wide .club-scroller__nav { margin-right: 1rem; padding: 0; }
+  @media (width >= 40rem) {
+    .club-wide .club-block__title, .club-wide .view-header, .club-wide .more-link { padding-inline: 1.5rem; }
+    .club-wide .club-scroller .view-content { padding-inline: 1.5rem; scroll-padding-inline: 1.5rem; }
+    .club-wide .club-scroller__nav { margin-right: 1.5rem; }
+  }
+
+  /* Text článků a stránek. */
+  .club-prose { line-height: 1.7; font-size: 1.0625rem; }
+  .club-prose > * + * { margin-top: 1.1em; }
+  .club-prose h2 { font-stretch: 70%; font-weight: 700; font-size: 2rem; line-height: 1.1; margin-top: 1.6em; }
+  .club-prose h3 { font-weight: 700; font-size: 1.25rem; margin-top: 1.4em; }
+  .club-prose a { color: var(--color-redink); text-decoration: underline; text-underline-offset: 3px; }
+  .club-prose ul { list-style: disc; padding-left: 1.25rem; }
+  .club-prose ol { list-style: decimal; padding-left: 1.25rem; }
+  .club-prose blockquote { border-left: 4px solid var(--color-red); padding-left: 1.25rem; font-size: 1.2rem; }
+  .club-prose img { border-radius: .75rem; }
+  .club-prose table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+  .club-prose th, .club-prose td { border-bottom: 1px solid var(--color-line); padding: .5rem .75rem; text-align: left; }
+
+  /* Tabulka soutěže / konečné pořadí (tabulka vložená v CKEditoru). */
+  .club-standings { overflow-x: auto; background: var(--color-card); border: 1px solid var(--color-line); border-radius: .75rem; }
+  .club-standings table { width: 100%; border-collapse: collapse; font-size: .9rem; font-variant-numeric: tabular-nums; }
+  .club-standings th, .club-standings td { padding: .6rem .9rem; border-bottom: 1px solid var(--color-line); text-align: left; white-space: nowrap; }
+  .club-standings thead th, .club-standings tr:first-child th { color: var(--color-muted); font-weight: 500; }
+  .club-standings tr:last-child td { border-bottom: 0; }
+  .club-standings td:not(:nth-child(2)) { text-align: center; }
+  .club-standings td:first-child { color: var(--color-muted); width: 2.5rem; }
+  .club-standings td:last-child { font-weight: 700; }
+  .club-standings tr.is-us td { background: rgb(var(--club-red) / .06); font-weight: 600; }
+  .club-standings p { margin: 0; }
+
+  /* Bloky v patičce. */
+  .club-footer a { color: rgb(var(--club-bg) / .7); }
+  .club-footer a:hover { color: var(--color-bg); }
+  .club-footer .club-block__title { font-size: 1rem; font-stretch: 100%; margin-bottom: .5rem; }
+
+  /* Formuláře (vyhledávání, kontakty) – základ. */
+  .form-item { margin-bottom: 1rem; }
+  .form-item label { display: block; font-weight: 600; font-size: .875rem; margin-bottom: .25rem; }
+  .form-text, .form-email, .form-textarea, .form-select, .form-search {
+    width: 100%; border: 1px solid var(--color-line); background: var(--color-card);
+    border-radius: .5rem; padding: .55rem .75rem;
+  }
+  .button, .form-submit { background: var(--color-ink); color: var(--color-bg); font-weight: 600; border-radius: .5rem; padding: .55rem 1rem; }
+}
+
+/*
+ * Mobilní menu – MIMO @layer, aby přebilo utility třídy z šablony menu
+ * (items-center, absolute, px-3…). Styly ve vrstvách vždy prohrají se styly
+ * mimo vrstvy, bez ohledu na specificitu.
+ */
+.club-mobile-nav .club-nav { flex-direction: column; align-items: stretch; gap: 0; width: 100%; }
+.club-mobile-nav .club-nav > li { width: 100%; }
+.club-mobile-nav .club-nav > li { border-bottom: 1px solid var(--color-line); }
+.club-mobile-nav .club-nav > li > a,
+.club-mobile-nav .club-nav__toggle { padding: .75rem 0; font-weight: 600; border-radius: 0; width: 100%; justify-content: space-between; text-align: left; }
+.club-mobile-nav .club-nav > li > a:hover,
+.club-mobile-nav .club-nav__toggle:hover { background: transparent; }
+.club-mobile-nav .club-dd { position: static; display: none; visibility: visible; opacity: 1; transform: none; padding: 0 0 .75rem; }
+.club-mobile-nav .club-nav__item.is-open > .club-dd { display: block; }
+.club-mobile-nav .club-nav__sub { border: 0; box-shadow: none; background: transparent; padding: 0 0 0 .75rem; color: var(--color-muted); }
+.club-mobile-nav nav + nav { margin-top: 0; }
+
+.club-mobile-nav .club-nav__sub li > a { padding: .5rem 0; }
+.club-mobile-nav .club-nav__sub li:not(:has(a)) { padding: .75rem 0 .25rem; }
+
+/*
+ * Hlavička bloku: nadpis vlevo, odkaz „Více“ a šipky pásu vpravo.
+ * Sestavuje ji club.js (bez JS zůstane odkaz pod obsahem).
+ * Mimo @layer, aby přebilo mb-6 a další utility na nadpisu.
+ */
+.club-block__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1rem; margin-bottom: 1.5rem; }
+.club-block__head .club-block__title { margin-bottom: 0; }
+.club-block__actions { display: flex; align-items: center; gap: 1rem; margin-left: auto; }
+.club-block__actions .more-link { margin: 0; padding: 0; }
+.club-block__actions .club-scroller__nav { margin: 0; padding: 0; }
+.club-panel .club-block__head { margin-bottom: 1rem; }
+.club-wide .club-block__head { padding-inline: 1rem; }
+.club-wide .club-block__head .club-block__title { padding-inline: 0; }
+@media (width >= 40rem) {
+  .club-wide .club-block__head { padding-inline: 1.5rem; }
+}
