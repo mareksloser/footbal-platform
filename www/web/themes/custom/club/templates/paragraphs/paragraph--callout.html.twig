@@ -1,20 +1,27 @@
-{# Zvýrazněný blok (např. spolupráce s partnerským klubem). Barva podle field_style. #}
-{% set tone = {
-  'blue': ['bg-blue text-white', 'text-blue'],
-  'red': ['bg-red text-white', 'text-red'],
-  'ink': ['bg-ink text-bg', 'text-ink'],
-}[club.style] ?? ['bg-blue text-white', 'text-blue'] %}
-<section{{ attributes.addClass(tone[0], 'rounded-xl', 'p-6', 'sm:p-8', 'flex', 'gap-6', 'items-start') }}>
+{# Zvýrazněný blok (např. spolupráce s partnerským klubem). Akcentní barva podle field_style. #}
+{% set tones = {
+  blue: { stripe: 'border-l-blue', shield: 'bg-blue text-white', hover: 'hover:border-blue hover:text-blue' },
+  red:  { stripe: 'border-l-red',  shield: 'bg-red text-white',  hover: 'hover:border-red hover:text-red' },
+  ink:  { stripe: 'border-l-ink',  shield: 'bg-ink text-bg',     hover: 'hover:border-ink hover:text-ink' },
+} %}
+{% set tone = tones[club.style] ?? tones.blue %}
+
+<section{{ attributes.addClass([
+  'bg-white', 'border', 'border-ink/10', 'border-l-4', tone.stripe,
+  'rounded-xl', 'p-6', 'sm:p-8', 'flex', 'gap-5', 'items-start',
+]) }}>
   {% if club.badge %}
-    <span class="shrink-0 grid place-items-center h-16 w-[3.25rem] shield bg-white"><span class="cond font-extrabold {{ tone[1] }}">{{ club.badge }}</span></span>
+    <span class="shrink-0 grid place-items-center h-14 w-[2.85rem] shield {{ tone.shield }}">
+      <span class="cond text-sm font-extrabold">{{ club.badge }}</span>
+    </span>
   {% endif %}
   <div class="min-w-0">
-    {% if club.title %}<h2 class="cond text-3xl font-bold">{{ club.title }}</h2>{% endif %}
-    <div class="mt-2 leading-relaxed max-w-prose opacity-90 [&_a]:underline [&_p+p]:mt-3">{{ content.field_text }}</div>
+    {% if club.title %}<h2 class="cond text-2xl sm:text-3xl font-bold text-ink">{{ club.title }}</h2>{% endif %}
+    <div class="mt-2 leading-relaxed max-w-prose text-ink/70 [&_a]:underline [&_p+p]:mt-3">{{ content.field_text }}</div>
     {% if club.links %}
       <div class="mt-4 flex flex-wrap gap-2">
         {% for l in club.links %}
-          <a href="{{ l.url }}" class="h-9 px-3.5 inline-flex items-center rounded-md bg-white {{ tone[1] }} text-sm font-semibold hover:opacity-90">{{ l.title }}</a>
+          <a href="{{ l.url }}" class="h-9 px-3.5 inline-flex items-center rounded-md border border-ink/15 text-ink text-sm font-semibold transition-colors {{ tone.hover }}">{{ l.title }}</a>
         {% endfor %}
       </div>
     {% endif %}

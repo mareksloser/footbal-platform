@@ -1,0 +1,18 @@
+langcode: cs
+status: true
+dependencies:
+  config:
+  - field.storage.paragraph.field_igp_heading
+  - paragraphs.paragraphs_type.instagram_panel
+id: paragraph.instagram_panel.field_igp_heading
+field_name: field_igp_heading
+entity_type: paragraph
+bundle: instagram_panel
+label: Nadpis
+description: Prázdné = výchozí text vzhledu.
+required: false
+translatable: false
+default_value: []
+default_value_callback: ''
+settings: {}
+field_type: string

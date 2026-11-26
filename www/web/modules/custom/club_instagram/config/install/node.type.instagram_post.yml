@@ -1,0 +1,13 @@
+langcode: cs
+status: true
+dependencies:
+  enforced:
+    module:
+      - club_instagram
+name: 'Instagram příspěvek'
+type: instagram_post
+description: 'Fotka s odkazem na příspěvek na Instagramu. Zobrazuje se v blocích „Instagram panel“.'
+help: 'Nahrajte fotku z příspěvku a vložte odkaz na něj (Sdílet › Kopírovat odkaz). Tým a zápas vyplňte, pokud se má příspěvek ukazovat u nich.'
+new_revision: false
+preview_mode: 0
+display_submitted: false

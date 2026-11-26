@@ -1,0 +1,4 @@
+panel:
+  css:
+    component:
+      css/instagram-panel.css: {}

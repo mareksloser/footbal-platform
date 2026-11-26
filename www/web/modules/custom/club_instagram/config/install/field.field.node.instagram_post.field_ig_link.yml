@@ -1,0 +1,22 @@
+langcode: cs
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ig_link
+    - node.type.instagram_post
+  module:
+    - link
+id: node.instagram_post.field_ig_link
+field_name: field_ig_link
+entity_type: node
+bundle: instagram_post
+label: 'Odkaz na příspěvek'
+description: 'Např. https://www.instagram.com/p/ABC123/. Prázdné = fotka povede na profil klubu.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  title: 0
+  link_type: 16
+field_type: link

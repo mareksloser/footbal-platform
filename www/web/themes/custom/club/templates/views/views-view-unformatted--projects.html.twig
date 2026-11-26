@@ -1,0 +1,31 @@
+{#
+/**
+ * @file
+ * View „projects“.
+ * - S CSS třídou „club-project-groups“ (stránka /projekty): skupiny podle stavu
+ *   (Probíhá, Plánujeme, Hotovo – pořadí hodnot pole field_project_status).
+ * - Jinak (blok na úvodní stránce): mřížka karet.
+ */
+#}
+{% set headings = {
+  running: 'Právě realizujeme',
+  planned: 'Plánujeme',
+  done: 'Hotové projekty',
+} %}
+{% if club_project_groups %}
+  {% for group in club_project_groups %}
+    <section class="{{ not loop.first ? 'mt-16' }}">
+      <div class="flex items-baseline gap-3 mb-6">
+        <h2 class="cond text-3xl font-bold">{{ headings[group.key]|default(group.label) }}</h2>
+        <span class="text-muted tnum">{{ group.rows|length }}</span>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
+        {% for row in group.rows %}<div{{ row.attributes.addClass('h-full') }}>{{ row.content }}</div>{% endfor %}
+      </div>
+    </section>
+  {% endfor %}
+{% else %}
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
+    {% for row in rows %}<div{{ row.attributes.addClass('h-full') }}>{{ row.content }}</div>{% endfor %}
+  </div>
+{% endif %}

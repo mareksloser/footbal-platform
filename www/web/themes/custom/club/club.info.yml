@@ -4,7 +4,7 @@ description: 'Téma klubového webu Footbal Platform (Tailwind CSS 4, SDC kompon
 package: 'Footbal Platform'
 core_version_requirement: ^10.3 || ^11
 base theme: stable9
-logo: logo.svg
+logo: logo.png
 libraries:
   - club/global
 regions:

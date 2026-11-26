@@ -1,0 +1,11 @@
+name: 'Club Instagram'
+type: module
+description: 'Instagram příspěvky spravované v administraci a blok „Instagram panel“ (banner, mřížka, karta, profil, lišta).'
+package: 'Footbal Platform'
+core_version_requirement: ^10.3 || ^11
+configure: club_instagram.settings
+dependencies:
+  - drupal:node
+  - drupal:image
+  - drupal:link
+  - club_core:club_core

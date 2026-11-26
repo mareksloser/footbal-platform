@@ -1,0 +1,21 @@
+langcode: cs
+status: true
+dependencies:
+  config:
+  - field.storage.paragraph.field_igp_match
+  - paragraphs.paragraphs_type.instagram_panel
+id: paragraph.instagram_panel.field_igp_match
+field_name: field_igp_match
+entity_type: paragraph
+bundle: instagram_panel
+label: Na detailu zápasu ukázat nejdřív příspěvky k tomuto zápasu
+description: ''
+required: false
+translatable: false
+default_value:
+- value: 1
+default_value_callback: ''
+settings:
+  on_label: Ano
+  off_label: Ne
+field_type: boolean

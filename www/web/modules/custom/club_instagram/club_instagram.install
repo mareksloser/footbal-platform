@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * Instalace a aktualizace modulu Club Instagram.
+ */
+
+use Drupal\Core\Config\FileStorage;
+use Drupal\Core\Config\InstallStorage;
+
+/**
+ * Doplní paragraf „Instagram panel“ (config/optional) na už nainstalovaný web.
+ */
+function club_instagram_update_10001(): string {
+  if (!\Drupal::moduleHandler()->moduleExists('paragraphs')) {
+    return (string) t('Modul Paragraphs není zapnutý – paragraf se vytvoří, až ho zapnete.');
+  }
+  $path = \Drupal::service('extension.list.module')->getPath('club_instagram') . '/' . InstallStorage::CONFIG_OPTIONAL_DIRECTORY;
+  \Drupal::service('config.installer')->installOptionalConfig(new FileStorage($path));
+  return (string) t('Paragraf „Instagram panel“ byl vytvořen.');
+}

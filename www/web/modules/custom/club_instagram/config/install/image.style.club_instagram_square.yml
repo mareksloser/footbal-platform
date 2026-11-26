@@ -1,0 +1,23 @@
+langcode: cs
+status: true
+dependencies:
+  enforced:
+    module:
+      - club_instagram
+name: club_instagram_square
+label: 'Instagram – čtverec'
+effects:
+  2b5c0a1e-7d3f-4c55-9a40-000000000001:
+    uuid: 2b5c0a1e-7d3f-4c55-9a40-000000000001
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 640
+      height: 640
+      anchor: center-center
+  2b5c0a1e-7d3f-4c55-9a40-000000000011:
+    uuid: 2b5c0a1e-7d3f-4c55-9a40-000000000011
+    id: image_convert
+    weight: 2
+    data:
+      extension: webp

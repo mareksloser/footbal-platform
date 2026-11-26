@@ -1,0 +1,7 @@
+club_instagram.settings:
+  path: '/admin/config/services/club-instagram'
+  defaults:
+    _form: '\Drupal\club_instagram\Form\SettingsForm'
+    _title: 'Instagram klubu'
+  requirements:
+    _permission: 'administer site configuration'

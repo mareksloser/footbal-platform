@@ -1,0 +1,21 @@
+langcode: cs
+status: true
+dependencies:
+  config:
+  - field.storage.paragraph.field_igp_variant
+  - paragraphs.paragraphs_type.instagram_panel
+  module:
+  - options
+id: paragraph.instagram_panel.field_igp_variant
+field_name: field_igp_variant
+entity_type: paragraph
+bundle: instagram_panel
+label: Vzhled
+description: Banner a lišta se hodí přes celou šířku, karta a profil do bočního panelu.
+required: true
+translatable: false
+default_value:
+- value: grid
+default_value_callback: ''
+settings: {}
+field_type: list_string

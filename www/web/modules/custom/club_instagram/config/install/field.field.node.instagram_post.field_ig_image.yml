@@ -1,0 +1,36 @@
+langcode: cs
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ig_image
+    - node.type.instagram_post
+  module:
+    - image
+id: node.instagram_post.field_ig_image
+field_name: field_ig_image
+entity_type: node
+bundle: instagram_post
+label: Fotka
+description: 'Ideálně čtverec nebo na výšku 4 : 5, alespoň 1080 px. Ořízne se automaticky.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: 'instagram/[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'png jpg jpeg webp'
+  max_filesize: '10 MB'
+  max_resolution: '2400x2400'
+  min_resolution: ''
+  alt_field: true
+  alt_field_required: false
+  title_field: false
+  default_image:
+    uuid: null
+    alt: ''
+    title: ''
+    width: null
+    height: null
+field_type: image

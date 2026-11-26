@@ -1,0 +1,7 @@
+club_instagram.add_post:
+  title: 'Přidat Instagram příspěvek'
+  route_name: node.add
+  route_parameters:
+    node_type: instagram_post
+  appears_on:
+    - club_instagram.settings

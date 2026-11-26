@@ -1,0 +1,14 @@
+langcode: cs
+status: true
+dependencies:
+  enforced:
+    module:
+    - club_instagram
+id: instagram_panel
+label: Instagram panel
+icon_uuid: null
+icon_default: null
+description: Panel s příspěvky z Instagramu klubu – stejné možnosti jako blok „Instagram
+  panel“.
+save_empty: false
+behavior_plugins: {}

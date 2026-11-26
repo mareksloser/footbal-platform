@@ -1,0 +1,19 @@
+club_instagram.settings:
+  type: config_object
+  label: 'Instagram klubu'
+  mapping:
+    handle: { type: string, label: 'Účet (bez @)' }
+    profile_url: { type: uri, label: 'Odkaz na profil' }
+
+block.settings.club_instagram_panel:
+  type: block_settings
+  label: 'Instagram panel'
+  mapping:
+    variant: { type: string, label: 'Vzhled' }
+    heading: { type: label, label: 'Nadpis' }
+    text: { type: label, label: 'Text' }
+    button: { type: label, label: 'Text tlačítka' }
+    count: { type: integer, label: 'Počet fotek' }
+    team: { type: string, label: 'Filtr podle týmu' }
+    match: { type: boolean, label: 'Na detailu zápasu jen jeho příspěvky' }
+    handle: { type: string, label: 'Jiný účet (bez @)' }

@@ -1,0 +1,82 @@
+{#
+/**
+ * @file
+ * Instagram panel – vzhledy banner, grid, card, profile, strip.
+ *
+ * Proměnné: variant, heading, text, button, handle, profile_url, logo_url,
+ * items (src, alt, caption, url).
+ *
+ * V tématu lze přepsat celou šablonu nebo jen jeden vzhled
+ * (club-instagram-panel--strip.html.twig).
+ */
+#}
+{% set icon %}
+  <svg class="igp__icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+{% endset %}
+{% set at = handle ? '@' ~ handle %}
+{% set btn %}
+  {% if profile_url %}
+    <a class="igp__btn" href="{{ profile_url }}" target="_blank" rel="noopener">{{ icon }}<span>{{ button }}{% if variant == 'banner' and at %} {{ at }}{% endif %}</span></a>
+  {% endif %}
+{% endset %}
+{% macro photo(item, class) %}
+  <a class="igp__photo {{ class }}" href="{{ item.url }}" target="_blank" rel="noopener" title="{{ item.caption }}">
+    <img src="{{ item.src }}" alt="{{ item.alt }}" loading="lazy" decoding="async">
+  </a>
+{% endmacro %}
+{% import _self as m %}
+
+<section class="igp igp--{{ variant }}" aria-label="{{ 'Instagram'|t }}{{ at ? ' ' ~ at }}">
+
+  {% if variant == 'banner' %}
+    <div class="igp__body">
+      <h2 class="igp__heading">{{ heading }}</h2>
+      {% if text %}<p class="igp__text">{{ text }}</p>{% endif %}
+      {{ btn }}
+    </div>
+    {% if items %}
+      <div class="igp__collage igp__collage--{{ min(items|length, 4) }}">
+        {% for item in items|slice(0, 4) %}{{ m.photo(item) }}{% endfor %}
+      </div>
+    {% endif %}
+
+  {% elseif variant == 'grid' %}
+    <header class="igp__head">
+      <h2 class="igp__heading">{{ heading }}</h2>
+      {{ btn }}
+    </header>
+    {% if items %}
+      <div class="igp__grid">
+        {% for item in items %}{{ m.photo(item) }}{% endfor %}
+      </div>
+    {% endif %}
+
+  {% elseif variant == 'card' %}
+    {% if items %}{{ m.photo(items|first, 'igp__cover') }}{% endif %}
+    <div class="igp__band">{{ icon }}</div>
+    <div class="igp__body">
+      <h2 class="igp__heading">{{ heading }}</h2>
+      {{ btn }}
+    </div>
+
+  {% elseif variant == 'profile' %}
+    <div class="igp__marks">
+      {% if logo_url %}<img class="igp__logo" src="{{ logo_url }}" alt="">{% endif %}
+      <span class="igp__badge">{{ icon }}</span>
+    </div>
+    <h2 class="igp__heading">{{ heading }}</h2>
+    {% if at %}<p class="igp__handle">{{ at }}</p>{% endif %}
+    {{ btn }}
+
+  {% else %}
+    <span class="igp__badge">{{ icon }}</span>
+    <p class="igp__text"><strong>{{ heading }}</strong>{% if text %} {{ text }}{% if at %} <span class="igp__handle">{{ at }}</span>{% endif %}{% endif %}</p>
+    {% if items %}
+      <div class="igp__thumbs">
+        {% for item in items %}{{ m.photo(item) }}{% endfor %}
+      </div>
+    {% endif %}
+    {{ btn }}
+  {% endif %}
+
+</section>

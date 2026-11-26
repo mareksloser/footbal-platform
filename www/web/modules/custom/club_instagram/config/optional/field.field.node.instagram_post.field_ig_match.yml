@@ -1,0 +1,27 @@
+langcode: cs
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ig_match
+    - node.type.instagram_post
+    - node.type.match
+id: node.instagram_post.field_ig_match
+field_name: field_ig_match
+entity_type: node
+bundle: instagram_post
+label: Zápas
+description: 'Příspěvek se pak ukáže v panelu na detailu tohoto zápasu.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      match: match
+    sort:
+      field: created
+      direction: DESC
+    auto_create: false
+field_type: entity_reference

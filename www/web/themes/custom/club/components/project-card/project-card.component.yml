@@ -1,0 +1,16 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Karta projektu
+status: stable
+description: 'Projekt klubu – obrázek 16:10 se štítkem stavu, termín, nadpis, perex, u probíhajících ukazatel postupu. Celá karta je klikací.'
+props:
+  type: object
+  properties:
+    url: { type: string }
+    title: { type: string }
+    lead: { type: ['string', 'null'] }
+    term: { type: ['string', 'null'] }
+    status: { type: ['string', 'null'] }
+    status_label: { type: ['string', 'null'] }
+    progress: { type: ['integer', 'null'], title: 'Hotovo v % (jen u probíhajících)' }
+    image_url: { type: ['string', 'null'] }
+    logo_url: { type: ['string', 'null'], title: 'Logo klubu (náhrada chybějícího obrázku)' }

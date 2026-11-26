@@ -1,0 +1,21 @@
+langcode: cs
+status: true
+dependencies:
+  module:
+  - paragraphs
+  - club_instagram
+  - options
+id: paragraph.field_igp_team
+field_name: field_igp_team
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values: []
+  allowed_values_function: Drupal\club_instagram\PanelBuilder::teamAllowedValues
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {}
+persist_with_no_fields: false
+custom_storage: false

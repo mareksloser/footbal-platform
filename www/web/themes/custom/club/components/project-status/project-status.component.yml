@@ -1,0 +1,10 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Stav projektu
+status: stable
+description: 'Štítek stavu projektu – Probíhá (hlavní barva), Plánujeme (doplňková), Hotovo (barva výhry).'
+props:
+  type: object
+  properties:
+    status: { type: ['string', 'null'], enum: ['running', 'planned', 'done', null] }
+    label: { type: ['string', 'null'] }
+    solid: { type: boolean, title: 'Plná varianta (na obrázek)' }

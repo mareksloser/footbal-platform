@@ -1,0 +1,23 @@
+langcode: cs
+status: true
+dependencies:
+  config:
+  - field.storage.paragraph.field_igp_count
+  - paragraphs.paragraphs_type.instagram_panel
+id: paragraph.instagram_panel.field_igp_count
+field_name: field_igp_count
+entity_type: paragraph
+bundle: instagram_panel
+label: Počet fotek
+description: 0 = podle vzhledu (banner 4, mřížka 4, karta 1, lišta 3, profil bez fotek).
+required: false
+translatable: false
+default_value:
+- value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: 12
+  prefix: ''
+  suffix: ''
+field_type: integer

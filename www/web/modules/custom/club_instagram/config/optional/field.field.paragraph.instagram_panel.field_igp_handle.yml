@@ -1,0 +1,18 @@
+langcode: cs
+status: true
+dependencies:
+  config:
+  - field.storage.paragraph.field_igp_handle
+  - paragraphs.paragraphs_type.instagram_panel
+id: paragraph.instagram_panel.field_igp_handle
+field_name: field_igp_handle
+entity_type: paragraph
+bundle: instagram_panel
+label: Jiný účet (bez @)
+description: Prázdné = účet klubu z nastavení. Hodí se např. pro partnerský klub.
+required: false
+translatable: false
+default_value: []
+default_value_callback: ''
+settings: {}
+field_type: string

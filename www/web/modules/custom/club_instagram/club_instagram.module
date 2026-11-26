@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * @file
+ * Instagram příspěvky a panely pro klubový web Footbal Platform.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function club_instagram_theme(): array {
+  return [
+    'club_instagram_panel' => [
+      'variables' => [
+        'variant' => 'grid',
+        'heading' => NULL,
+        'text' => NULL,
+        'button' => NULL,
+        'handle' => NULL,
+        'profile_url' => NULL,
+        'logo_url' => NULL,
+        'items' => [],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ *
+ * Šablonu lze v tématu přepsat i jen pro jeden vzhled:
+ * club-instagram-panel--strip.html.twig.
+ */
+function club_instagram_theme_suggestions_club_instagram_panel(array $variables): array {
+  return ['club_instagram_panel__' . $variables['variant']];
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view() for paragraph.
+ *
+ * Paragraf „Instagram panel“ vykreslí stejný panel jako blok. Jeho pole
+ * jsou jen nastavení, v zobrazení se netisknou.
+ */
+function club_instagram_paragraph_view(array &$build, \Drupal\Core\Entity\EntityInterface $paragraph, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, string $view_mode): void {
+  if ($paragraph->bundle() !== 'instagram_panel') {
+    return;
+  }
+  foreach (array_keys($build) as $key) {
+    if (str_starts_with((string) $key, 'field_igp_')) {
+      unset($build[$key]);
+    }
+  }
+  $build['panel'] = \Drupal::service('club_instagram.panel_builder')->buildFromParagraph($paragraph);
+}

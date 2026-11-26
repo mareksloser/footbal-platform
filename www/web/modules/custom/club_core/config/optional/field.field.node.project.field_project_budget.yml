@@ -1,0 +1,22 @@
+langcode: cs
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_project_budget
+    - node.type.project
+id: node.project.field_project_budget
+field_name: field_project_budget
+entity_type: node
+bundle: project
+label: 'Rozpočet (Kč)'
+description: 'Celkové náklady. Nevyplněno = nezobrazí se.'
+required: false
+translatable: false
+default_value: {}
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ' Kč'
+field_type: integer

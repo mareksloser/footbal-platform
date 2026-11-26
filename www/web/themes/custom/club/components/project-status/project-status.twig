@@ -1,0 +1,15 @@
+{% set styles = {
+  running: solid ? 'bg-red text-white' : 'bg-red/10 text-redink',
+  planned: solid ? 'bg-blue text-white' : 'bg-blue/10 text-blueink',
+  done: solid ? 'bg-win text-white' : 'bg-win/10 text-win',
+} %}
+{% if label %}
+  <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full {{ styles[status]|default('bg-surface text-muted') }}">
+    {% if status == 'running' %}
+      <span aria-hidden="true" class="h-1.5 w-1.5 rounded-full {{ solid ? 'bg-white' : 'bg-red' }} animate-pulse"></span>
+    {% elseif status == 'done' %}
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>
+    {% endif %}
+    {{ label }}
+  </span>
+{% endif %}

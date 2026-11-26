@@ -1,0 +1,79 @@
+langcode: cs
+status: true
+dependencies:
+  config:
+  - field.field.paragraph.instagram_panel.field_igp_button
+  - field.field.paragraph.instagram_panel.field_igp_count
+  - field.field.paragraph.instagram_panel.field_igp_handle
+  - field.field.paragraph.instagram_panel.field_igp_heading
+  - field.field.paragraph.instagram_panel.field_igp_match
+  - field.field.paragraph.instagram_panel.field_igp_team
+  - field.field.paragraph.instagram_panel.field_igp_text
+  - field.field.paragraph.instagram_panel.field_igp_variant
+  - paragraphs.paragraphs_type.instagram_panel
+id: paragraph.instagram_panel.default
+targetEntityType: paragraph
+bundle: instagram_panel
+mode: default
+content:
+  field_igp_variant:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {}
+    third_party_settings: {}
+  field_igp_heading:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {}
+  field_igp_text:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {}
+  field_igp_button:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {}
+  field_igp_count:
+    type: number
+    weight: 4
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {}
+  field_igp_team:
+    type: options_select
+    weight: 5
+    region: content
+    settings: {}
+    third_party_settings: {}
+  field_igp_match:
+    type: boolean_checkbox
+    weight: 6
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {}
+  field_igp_handle:
+    type: string_textfield
+    weight: 7
+    region: content
+    settings:
+      size: 30
+      placeholder: nazev_uctu
+    third_party_settings: {}
+hidden:
+  created: true
+  status: true

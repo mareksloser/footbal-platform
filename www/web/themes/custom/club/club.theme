@@ -157,7 +157,7 @@ function club_preprocess_page(array &$variables): void {
   $variables['is_team_page'] = $node instanceof NodeInterface && $node->bundle() === 'team' && $canonical;
   // Detail zápasu má vlastní záhlaví se skóre (node--match--full).
   $variables['hide_page_header'] = $variables['is_team_page']
-    || ($node instanceof NodeInterface && in_array($node->bundle(), ['match', 'player', 'event', 'tournament'], TRUE) && $canonical);
+    || ($node instanceof NodeInterface && in_array($node->bundle(), ['match', 'player', 'event', 'tournament', 'project'], TRUE) && $canonical);
 
   $variables['#cache']['tags'][] = 'config:system.site';
   $variables['#cache']['tags'][] = 'config:club.settings';
@@ -465,6 +465,11 @@ function club_preprocess_views_view_unformatted(array &$variables): void {
   // Partneři po úrovních (CSS třída „club-partner-levels“).
   if (str_contains($css_class, 'club-partner-levels')) {
     $variables['club_partner_groups'] = _club_list_groups($view, $variables['rows'], 'field_partner_level', 'partner', 'Partneři');
+    return;
+  }
+  // Projekty po stavech Probíhá / Plánujeme / Hotovo (CSS třída „club-project-groups“).
+  if (str_contains($css_class, 'club-project-groups')) {
+    $variables['club_project_groups'] = _club_list_groups($view, $variables['rows'], 'field_project_status', 'planned', 'Projekty');
     return;
   }
   // Týmy po skupinách Dospělí / Mládež (CSS třída „club-team-groups“).
@@ -941,6 +946,70 @@ function _club_related_articles(NodeInterface $node, CacheableMetadata $cache): 
   }
   $entities = \Drupal::entityTypeManager()->getStorage('node')->loadMultiple($ids);
   return \Drupal::entityTypeManager()->getViewBuilder('node')->viewMultiple($entities, 'teaser');
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for node--project.
+ */
+function club_preprocess_node__project(array &$variables): void {
+  $node = $variables['node'];
+  $cache = CacheableMetadata::createFromRenderArray($variables);
+  [$image_card, $image_wide, $image_alt] = _club_article_images($node);
+  $progress = _club_value($node, 'field_project_progress');
+
+  $variables['club'] = [
+    'url' => $variables['url'],
+    'title' => $node->label(),
+    'lead' => _club_article_lead($node),
+    'term' => _club_value($node, 'field_project_term'),
+    'status' => _club_value($node, 'field_project_status'),
+    'status_label' => _club_list_label($node, 'field_project_status'),
+    'progress' => $progress === NULL ? NULL : max(0, min(100, (int) $progress)),
+    'image_url' => $image_card,
+    'logo_url' => theme_get_setting('logo.url'),
+  ];
+
+  if ($variables['view_mode'] === 'full') {
+    if (isset($variables['content']['body'])) {
+      $variables['content']['body']['#label_display'] = 'hidden';
+    }
+    $budget = _club_value($node, 'field_project_budget');
+    $partners = $node->hasField('field_project_partners') ? $node->get('field_project_partners')->referencedEntities() : [];
+    $variables['project'] = [
+      'image' => $image_wide,
+      'image_alt' => $image_alt,
+      'budget' => $budget === NULL ? NULL : number_format((int) $budget, 0, ',', "\u{00A0}") . "\u{00A0}Kč",
+      'funding' => _club_value($node, 'field_project_funding'),
+      'partners' => $partners ? \Drupal::entityTypeManager()->getViewBuilder('taxonomy_term')->viewMultiple($partners, 'teaser') : [],
+      'related' => _club_related_projects($node, $cache),
+    ];
+  }
+  $cache->applyTo($variables);
+}
+
+/**
+ * Tři další projekty – nejdřív probíhající a plánované, pak nejnovější hotové.
+ */
+function _club_related_projects(NodeInterface $node, CacheableMetadata $cache): array {
+  $cache->addCacheTags(['node_list:project']);
+  $storage = \Drupal::entityTypeManager()->getStorage('node');
+  $ids = [];
+  foreach ([['running', 'planned'], ['done']] as $statuses) {
+    $ids += $storage->getQuery()
+      ->accessCheck(TRUE)
+      ->condition('type', 'project')
+      ->condition('status', 1)
+      ->condition('nid', $node->id(), '<>')
+      ->condition('field_project_status', $statuses, 'IN')
+      ->sort('created', 'DESC')
+      ->range(0, 3)
+      ->execute();
+  }
+  $ids = array_slice($ids, 0, 3, TRUE);
+  if (!$ids) {
+    return [];
+  }
+  return \Drupal::entityTypeManager()->getViewBuilder('node')->viewMultiple($storage->loadMultiple($ids), 'teaser');
 }
 
 /**

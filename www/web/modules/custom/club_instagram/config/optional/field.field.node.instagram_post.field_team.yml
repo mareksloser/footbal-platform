@@ -1,0 +1,27 @@
+langcode: cs
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_team
+    - node.type.instagram_post
+    - node.type.team
+id: node.instagram_post.field_team
+field_name: field_team
+entity_type: node
+bundle: instagram_post
+label: Tým
+description: 'Prázdné = příspěvek za celý klub. Panel s filtrem „aktuální tým“ ukáže příspěvky daného týmu.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      team: team
+    sort:
+      field: title
+      direction: ASC
+    auto_create: false
+field_type: entity_reference

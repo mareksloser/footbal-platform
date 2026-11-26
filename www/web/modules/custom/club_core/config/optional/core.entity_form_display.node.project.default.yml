@@ -1,0 +1,70 @@
+langcode: cs
+status: true
+dependencies:
+  config:
+    - field.field.node.project.field_project_budget
+    - field.field.node.project.field_project_funding
+    - field.field.node.project.field_project_progress
+    - field.field.node.project.field_project_status
+    - field.field.node.project.field_project_term
+    - node.type.project
+  module:
+    - path
+id: node.project.default
+targetEntityType: node
+bundle: project
+mode: default
+content:
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings: { size: 60, placeholder: '' }
+    third_party_settings: {  }
+  field_project_status:
+    type: options_buttons
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_project_term:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings: { size: 30, placeholder: 'léto 2026' }
+    third_party_settings: {  }
+  field_project_progress:
+    type: number
+    weight: 3
+    region: content
+    settings: { placeholder: '' }
+    third_party_settings: {  }
+  field_project_budget:
+    type: number
+    weight: 4
+    region: content
+    settings: { placeholder: '' }
+    third_party_settings: {  }
+  field_project_funding:
+    type: string_textfield
+    weight: 5
+    region: content
+    settings: { size: 60, placeholder: '' }
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 31
+    region: content
+    settings: { display_label: true }
+    third_party_settings: {  }
+hidden:
+  created: true
+  promote: true
+  sticky: true
+  uid: true

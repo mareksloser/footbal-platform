@@ -1,0 +1,5 @@
+club_instagram.settings:
+  title: 'Instagram klubu'
+  description: 'Účet na Instagramu pro panely s příspěvky.'
+  route_name: club_instagram.settings
+  parent: system.admin_config_services

@@ -1,0 +1,22 @@
+langcode: cs
+status: true
+dependencies:
+  config:
+  - field.storage.paragraph.field_igp_team
+  - paragraphs.paragraphs_type.instagram_panel
+  module:
+  - options
+id: paragraph.instagram_panel.field_igp_team
+field_name: field_igp_team
+entity_type: paragraph
+bundle: instagram_panel
+label: Které příspěvky
+description: U týmu se nejdřív ukážou jeho příspěvky; když jich je málo, doplní se
+  klubové (bez týmu).
+required: true
+translatable: false
+default_value:
+- value: all
+default_value_callback: ''
+settings: {}
+field_type: list_string

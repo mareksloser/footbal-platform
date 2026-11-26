@@ -1,0 +1,18 @@
+langcode: cs
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_project_term
+    - node.type.project
+id: node.project.field_project_term
+field_name: field_project_term
+entity_type: node
+bundle: project
+label: 'Termín'
+description: 'Volný text, např. „léto 2026“, „2025“ nebo „04/2025 – 09/2025“.'
+required: false
+translatable: false
+default_value: {}
+default_value_callback: ''
+settings: {}
+field_type: string
