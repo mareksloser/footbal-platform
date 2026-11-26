@@ -1,0 +1,30 @@
+{#
+/**
+ * @file
+ * Pás partnerů (blok club_partner_strip).
+ *
+ * Proměnné: heading, partners [{name, url, logo_url}], cta_label, cta_url,
+ * style (dark | light). Loga jsou na bílých dlaždicích – čitelná na tmavém
+ * i světlém pozadí, barevná i průhledná.
+ */
+#}
+{% set dark = style == 'dark' %}
+<div class="{{ dark ? 'bg-ink text-bg border-b border-bg/10' : 'bg-surface text-ink border-y border-line' }}">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-6 flex flex-wrap items-center gap-x-8 gap-y-4">
+    {% if heading %}<span class="text-xs uppercase tracking-wider font-semibold {{ dark ? 'text-bg/50' : 'text-muted' }}">{{ heading }}</span>{% endif %}
+    <ul class="flex flex-wrap items-center gap-3">
+      {% for p in partners %}
+        {% set tag = p.url ? 'a' : 'span' %}
+        <li>
+          <{{ tag }}{% if p.url %} href="{{ p.url }}" target="_blank" rel="noopener"{% endif %} title="{{ p.name }}"
+            class="h-12 px-3 grid place-items-center rounded-md {{ p.logo_url ? 'bg-white opacity-80 hover:opacity-100 ' ~ (dark ? '' : 'border border-line') : 'font-semibold cond text-lg ' ~ (dark ? 'text-bg/60 hover:text-bg' : 'text-muted hover:text-ink') }}">
+            {% if p.logo_url %}<img src="{{ p.logo_url }}" alt="{{ p.name }}" loading="lazy" class="h-8 w-auto max-w-28 object-contain">{% else %}{{ p.name }}{% endif %}
+          </{{ tag }}>
+        </li>
+      {% endfor %}
+    </ul>
+    {% if cta_url and cta_label %}
+      <a href="{{ cta_url }}" class="ml-auto text-sm {{ dark ? 'text-bg/60 hover:text-bg' : 'text-redink hover:underline' }}">{{ cta_label }} →</a>
+    {% endif %}
+  </div>
+</div>

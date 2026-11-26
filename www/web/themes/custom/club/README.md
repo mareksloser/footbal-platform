@@ -110,17 +110,22 @@ Barvy štítků: Probíhá = hlavní barva, Plánujeme = doplňková, Hotovo = b
 
 ## Patička
 
-Vrstvy (vše se skrývá, když chybí data):
+Patička se skládá z pevné části a bloků (*Struktura › Rozvržení bloků › Club*):
 
-1. **Náborový pruh** – *Vzhled › Nastavení › Club › Patička › Náborový pruh*.
-   Hlavní tlačítko vede na *Odkaz tlačítka* z hlavičky.
-2. **Pás partnerů „Podporují nás“** – partneři se zaškrtnutým *Zobrazit v patičce*
-   (`field_partner_footer`, `drush updb` – club_core 10003), řazení podle váhy.
-   Na úvodní stránce se nezobrazuje (má vlastní sekci partnerů).
-3. **Hlavní část** – kontakt + IČO + sociální sítě (Instagram z modulu
-   `club_instagram`, Facebook a YouTube z nastavení), **Týmy** automaticky podle
-   `field_team_group`, **region Patička** (sem dejte blok menu „Patička“ s názvem
-   „Klub“ – O klubu, Aktuality, Projekty, Partneři, Dokumenty…) a **Kde hrajeme**
-   (areál, tréninky, tlačítko Navigovat).
-4. **Spodní lišta** – © rok, poznámka, Ochrana osobních údajů, Cookies,
-   Pro trenéry (/user), Nahoru.
+| Region | Co do něj patří |
+|---|---|
+| **Patička – pruhy nahoře** (`footer_top`) | celošířkové pruhy: blok **Výzva (pruh s tlačítky)** – nábor, brigáda, turnaj…; blok **Pás partnerů** |
+| **Patička – sloupce** (`footer`) | každý blok = sloupec vedle Kontaktu a Týmů: menu (např. „Klub“), blok **Místo (adresa a mapa)** |
+| **Patička – spodní lišta** (`footer_bottom`) | blok **Copyright**, menu **Patička – odkazy dole** (vodorovně, vpravo) |
+
+Pevná část: kontakt (*Vzhled › Nastavení › Club › Patička – kontakt* – název, adresa,
+IČO, e-mail, telefon, Facebook, YouTube; Instagram z modulu `club_instagram`)
+a **Týmy** automaticky podle `field_team_group`.
+
+Bloky Výzva, Pás partnerů a Místo jsou z `club_core` a fungují i mimo patičku
+(Layout Builder, jiné regiony) – Výzva a Pás partnerů mají volbu barvy/pozadí.
+Pás partnerů ukazuje partnery se zaškrtnutým *Zobrazit v pásu partnerů*
+(`field_partner_footer`), podle váhy. Skrytí na úvodní stránce řešte viditelností bloku (Stránky: `<front>`).
+
+`drush updb` (club_core 10003) založí pole partnera, menu *Patička – odkazy dole*
+(GDPR a Cookies vypnuté, Pro trenéry zapnuté) a rozmístí výchozí bloky.

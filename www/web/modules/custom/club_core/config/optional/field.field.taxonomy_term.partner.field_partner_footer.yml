@@ -8,8 +8,8 @@ id: taxonomy_term.partner.field_partner_footer
 field_name: field_partner_footer
 entity_type: taxonomy_term
 bundle: partner
-label: 'Zobrazit v patičce'
-description: 'Logo partnera se ukáže v pásu „Podporují nás“ v patičce (mimo úvodní stránku). Pořadí podle váhy termínu.'
+label: 'Zobrazit v pásu partnerů'
+description: 'Logo partnera se ukáže v bloku „Pás partnerů“ (např. v patičce). Pořadí podle váhy termínu.'
 required: false
 translatable: false
 default_value:

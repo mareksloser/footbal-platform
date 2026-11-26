@@ -8,7 +8,8 @@
 <div{{ attributes.addClass('club-block') }}>
   {{ title_prefix }}
   {% if label %}
-    <h2{{ title_attributes.addClass('club-block__title', 'cond', 'text-4xl', 'font-bold', 'mb-6') }}>{{ label }}</h2>
+    {% set title_classes = region == 'footer' ? ['cond', 'text-xl', 'font-bold', 'mb-3'] : ['cond', 'text-4xl', 'font-bold', 'mb-6'] %}
+    <h2{{ title_attributes.addClass('club-block__title', title_classes) }}>{{ label }}</h2>
   {% endif %}
   {{ title_suffix }}
   {% block content %}

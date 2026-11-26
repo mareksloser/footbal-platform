@@ -22,6 +22,18 @@ function club_core_theme(): array {
     'club_calendar_subscribe' => [
       'variables' => ['ics_url' => NULL, 'webcal_url' => NULL, 'google_url' => NULL, 'team_label' => NULL],
     ],
+    'club_cta_banner' => [
+      'variables' => ['heading' => NULL, 'text' => NULL, 'buttons' => [], 'style' => 'primary'],
+    ],
+    'club_partner_strip' => [
+      'variables' => ['heading' => NULL, 'partners' => [], 'cta_label' => NULL, 'cta_url' => NULL, 'style' => 'dark'],
+    ],
+    'club_place' => [
+      'variables' => ['address' => NULL, 'note' => NULL, 'map_url' => NULL, 'map_label' => NULL],
+    ],
+    'club_copyright' => [
+      'variables' => ['year' => NULL, 'owner' => NULL, 'note' => NULL],
+    ],
   ];
 }
 

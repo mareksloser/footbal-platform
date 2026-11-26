@@ -166,24 +166,13 @@ function club_preprocess_page(array &$variables): void {
 }
 
 /**
- * Data patičky – nábor, partneři, kontakt, týmy, areál, spodní lišta.
+ * Data pevné části patičky – kontakt, sociální sítě, týmy.
+ *
+ * Výzva, pás partnerů, místo, copyright a odkazy dole jsou bloky
+ * (regiony footer_top, footer, footer_bottom).
  */
 function _club_footer(CacheableMetadata $cache): array {
   $setting = static fn(string $key): ?string => trim((string) theme_get_setting($key)) ?: NULL;
-  $url = static fn(string $key): ?string => _club_url_string((string) theme_get_setting($key));
-
-  // Náborový pruh.
-  $recruit = NULL;
-  if ($setting('recruit_title') || $setting('recruit_text')) {
-    $recruit = [
-      'title' => $setting('recruit_title'),
-      'text' => $setting('recruit_text'),
-      'label' => $setting('recruit_label') ?: $setting('cta_label'),
-      'url' => _club_url_string((string) theme_get_setting('cta_url')),
-      'second_label' => $setting('recruit_second_label'),
-      'second_url' => $url('recruit_second_url'),
-    ];
-  }
 
   // Sociální sítě – Instagram z modulu club_instagram.
   $socials = [];
@@ -202,66 +191,14 @@ function _club_footer(CacheableMetadata $cache): array {
     }
   }
 
-  // Partneři se zaškrtnutým „Zobrazit v patičce“ (na úvodní stránce ne – ta má vlastní sekci).
-  $cache->addCacheContexts(['url.path.is_front']);
-  $partners = [];
-  if (!\Drupal::service('path.matcher')->isFrontPage()) {
-    $partners = _club_footer_partners($cache);
-  }
-
   $phone = $setting('club_phone');
   return [
-    'recruit' => $recruit,
-    'partners' => $partners,
-    'partner_cta_url' => $url('partner_cta_url'),
     'ico' => $setting('club_ico'),
     'phone' => $phone,
     'phone_href' => $phone ? 'tel:' . preg_replace('/[^0-9+]/', '', $phone) : NULL,
     'socials' => $socials,
     'team_groups' => _club_footer_teams($cache),
-    'venue_address' => $setting('venue_address'),
-    'venue_map_url' => $setting('venue_map_url'),
-    'training_note' => $setting('training_note'),
-    'privacy_url' => $url('privacy_url'),
-    'cookies_url' => $url('cookies_url'),
-    'login_url' => Url::fromRoute('user.page')->toString(),
   ];
-}
-
-/**
- * Partneři do patičky – logo (nebo název) a odkaz.
- */
-function _club_footer_partners(CacheableMetadata $cache): array {
-  $cache->addCacheTags(['taxonomy_term_list:partner']);
-  $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
-  $definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions('taxonomy_term', 'partner');
-  if (!isset($definitions['field_partner_footer'])) {
-    return [];
-  }
-  $ids = $storage->getQuery()
-    ->accessCheck(TRUE)
-    ->condition('vid', 'partner')
-    ->condition('status', 1)
-    ->condition('field_partner_footer', 1)
-    ->sort('weight')
-    ->sort('name')
-    ->execute();
-  $partners = [];
-  foreach ($storage->loadMultiple($ids) as $term) {
-    $media = _club_ref($term, 'field_logo');
-    $cache->addCacheableDependency($term);
-    if ($media) {
-      $cache->addCacheableDependency($media);
-    }
-    $partners[] = [
-      'name' => $term->label(),
-      'url' => $term->hasField('field_link') && !$term->get('field_link')->isEmpty()
-        ? $term->get('field_link')->first()->getUrl()->toString()
-        : NULL,
-      'logo_url' => _club_image_url($media, 'club_logo'),
-    ];
-  }
-  return $partners;
 }
 
 /**
@@ -531,6 +468,11 @@ function club_preprocess_block(array &$variables): void {
   if (in_array($variables['region'], ['header_left', 'header_right'], TRUE)
     && in_array($variables['base_plugin_id'] ?? '', ['system_menu_block', 'menu_block'], TRUE)) {
     $variables['content']['#attributes']['data-club-region'] = 'header';
+  }
+  // Menu ve spodní liště patičky – vodorovný seznam.
+  if ($variables['region'] === 'footer_bottom'
+    && in_array($variables['base_plugin_id'] ?? '', ['system_menu_block', 'menu_block'], TRUE)) {
+    $variables['content']['#attributes']['data-club-region'] = 'footer-bottom';
   }
 }
 

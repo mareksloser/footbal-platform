@@ -214,10 +214,15 @@
   .club-standings p { margin: 0; }
 
   /* Bloky v patičce. */
+  /* Region „Patička – sloupce“: obal regionu je průhledný, každý blok = sloupec mřížky. */
+  .club-footer > div { display: contents; }
   .club-footer a { color: rgb(var(--club-bg) / .7); }
   .club-footer a:hover { color: var(--color-bg); }
   .club-footer ul { font-size: .875rem; }
-  .club-footer .club-block__title { font-size: 1.25rem; margin-bottom: .75rem; }
+  /* Spodní lišta: bloky vedle sebe, menu doprava. */
+  .club-footer-bottom > div { display: contents; }
+  .club-footer-bottom a:hover { color: var(--color-bg); }
+  @media (min-width: 40rem) { .club-footer-bottom nav { margin-left: auto; } }
 
   /* Formuláře (vyhledávání, kontakty) – základ. */
   .form-item { margin-bottom: 1rem; }

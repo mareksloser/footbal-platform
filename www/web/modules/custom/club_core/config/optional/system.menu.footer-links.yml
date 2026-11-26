@@ -1,0 +1,7 @@
+langcode: cs
+status: true
+dependencies: {  }
+id: footer-links
+label: 'Patička – odkazy dole'
+description: 'Odkazy ve spodní liště patičky – ochrana osobních údajů, cookies, pro trenéry…'
+locked: false

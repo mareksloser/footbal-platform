@@ -40,23 +40,94 @@ function club_core_update_10002(): string {
 }
 
 /**
- * Přidá partnerům pole „Zobrazit v patičce“ (pás partnerů v patičce webu).
+ * Patička z bloků: pole „Zobrazit v pásu partnerů“, menu „Patička – odkazy dole“
+ * a výchozí rozmístění bloků v tématu Club.
  */
 function club_core_update_10003(): string {
+  return _club_core_footer_setup();
+}
+
+/**
+ * Totéž jako 10003 pro weby, kde 10003 proběhl ještě s první verzí patičky.
+ */
+function club_core_update_10004(): string {
+  return _club_core_footer_setup();
+}
+
+/**
+ * Založí pole partnera, menu s odkazy a bloky patičky.
+ *
+ * Existující pole, odkazy a bloky nemění, lze spustit opakovaně.
+ */
+function _club_core_footer_setup(): string {
+  $etm = \Drupal::entityTypeManager();
   $path = \Drupal::service('extension.list.module')->getPath('club_core') . '/config/optional';
   \Drupal::service('config.installer')->installOptionalConfig(new FileStorage($path));
+  $messages = [];
 
-  $display = \Drupal::entityTypeManager()->getStorage('entity_form_display')->load('taxonomy_term.partner.default');
-  if ($display && !$display->getComponent('field_partner_footer')) {
+  // Pole partnera do formuláře.
+  $display = $etm->getStorage('entity_form_display')->load('taxonomy_term.partner.default');
+  if ($display && $etm->getStorage('field_config')->load('taxonomy_term.partner.field_partner_footer') && !$display->getComponent('field_partner_footer')) {
     $display->setComponent('field_partner_footer', [
       'type' => 'boolean_checkbox',
       'weight' => 20,
       'settings' => ['display_label' => TRUE],
     ])->save();
+    $messages[] = 'Partneři mají pole „Zobrazit v pásu partnerů“.';
   }
-  return \Drupal::entityTypeManager()->getStorage('field_config')->load('taxonomy_term.partner.field_partner_footer')
-    ? 'Partneři mají pole „Zobrazit v patičce“.'
-    : 'Slovník Partneři neexistuje – pole „Zobrazit v patičce“ nebylo založeno.';
+
+  // Odkazy v menu „Patička – odkazy dole“. Stránky GDPR a cookies zatím
+  // nemusí existovat – odkazy se proto zakládají vypnuté.
+  $links = $etm->getStorage('menu_link_content');
+  if ($etm->getStorage('menu')->load('footer-links') && !$links->loadByProperties(['menu_name' => 'footer-links'])) {
+    $defaults = [
+      ['Ochrana osobních údajů', 'internal:/ochrana-osobnich-udaju', FALSE],
+      ['Cookies', 'internal:/cookies', FALSE],
+      ['Pro trenéry', 'internal:/user/login', TRUE],
+    ];
+    foreach ($defaults as $weight => [$title, $uri, $enabled]) {
+      $links->create([
+        'title' => $title,
+        'link' => ['uri' => $uri],
+        'menu_name' => 'footer-links',
+        'weight' => $weight,
+        'enabled' => $enabled,
+        'expanded' => FALSE,
+      ])->save();
+    }
+    $messages[] = 'Menu „Patička – odkazy dole“ založeno (GDPR a Cookies jsou vypnuté, zapněte je po vytvoření stránek).';
+  }
+
+  // Výchozí bloky v regionech patičky tématu Club.
+  if (\Drupal::service('theme_handler')->themeExists('club')) {
+    $blocks = $etm->getStorage('block');
+    $footer_note = (string) theme_get_setting('footer_note', 'club');
+    $placements = [
+      'club_partner_strip' => ['club_partner_strip', 'footer_top', 0, ['label' => 'Pás partnerů', 'label_display' => FALSE]],
+      'club_place' => ['club_place', 'footer', 10, ['label' => 'Kde hrajeme', 'label_display' => 'visible']],
+      'club_copyright' => ['club_copyright', 'footer_bottom', 0, ['label' => 'Copyright', 'label_display' => FALSE, 'note' => $footer_note]],
+      'club_footer_links' => ['system_menu_block:footer-links', 'footer_bottom', 10, ['label' => 'Patička – odkazy dole', 'label_display' => FALSE, 'level' => 1, 'depth' => 1]],
+    ];
+    foreach ($placements as $id => [$plugin, $region, $weight, $settings]) {
+      // Přeskočí, pokud už blok s tímto pluginem v tématu je (i ručně umístěný).
+      if ($blocks->load($id) || $blocks->loadByProperties(['theme' => 'club', 'plugin' => $plugin])) {
+        continue;
+      }
+      $blocks->create([
+        'id' => $id,
+        'theme' => 'club',
+        'plugin' => $plugin,
+        'region' => $region,
+        'weight' => $weight,
+        'status' => TRUE,
+        'settings' => $settings + ['provider' => str_starts_with($plugin, 'system_') ? 'system' : 'club_core'],
+        'visibility' => [],
+      ])->save();
+    }
+    $messages[] = 'Bloky patičky rozmístěny (Pás partnerů, Kde hrajeme, Copyright, odkazy dole). Výzvu přidejte do regionu „Patička – pruhy nahoře“.';
+  }
+
+  return implode(' ', $messages) ?: 'Patička je už nastavená.';
 }
 
 /**

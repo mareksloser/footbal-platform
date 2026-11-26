@@ -15,4 +15,6 @@ regions:
   highlighted: 'Zvýrazněné (zprávy)'
   page_header: 'Záhlaví stránky (drobečky, nadpis)'
   content: 'Obsah'
-  footer: 'Patička'
+  footer_top: 'Patička – pruhy nahoře (výzva, partneři)'
+  footer: 'Patička – sloupce'
+  footer_bottom: 'Patička – spodní lišta'
