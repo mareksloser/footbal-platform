@@ -216,7 +216,8 @@
   /* Bloky v patičce. */
   .club-footer a { color: rgb(var(--club-bg) / .7); }
   .club-footer a:hover { color: var(--color-bg); }
-  .club-footer .club-block__title { font-size: 1rem; font-stretch: 100%; margin-bottom: .5rem; }
+  .club-footer ul { font-size: .875rem; }
+  .club-footer .club-block__title { font-size: 1.25rem; margin-bottom: .75rem; }
 
   /* Formuláře (vyhledávání, kontakty) – základ. */
   .form-item { margin-bottom: 1rem; }

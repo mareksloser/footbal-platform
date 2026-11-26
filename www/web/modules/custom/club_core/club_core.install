@@ -40,6 +40,26 @@ function club_core_update_10002(): string {
 }
 
 /**
+ * Přidá partnerům pole „Zobrazit v patičce“ (pás partnerů v patičce webu).
+ */
+function club_core_update_10003(): string {
+  $path = \Drupal::service('extension.list.module')->getPath('club_core') . '/config/optional';
+  \Drupal::service('config.installer')->installOptionalConfig(new FileStorage($path));
+
+  $display = \Drupal::entityTypeManager()->getStorage('entity_form_display')->load('taxonomy_term.partner.default');
+  if ($display && !$display->getComponent('field_partner_footer')) {
+    $display->setComponent('field_partner_footer', [
+      'type' => 'boolean_checkbox',
+      'weight' => 20,
+      'settings' => ['display_label' => TRUE],
+    ])->save();
+  }
+  return \Drupal::entityTypeManager()->getStorage('field_config')->load('taxonomy_term.partner.field_partner_footer')
+    ? 'Partneři mají pole „Zobrazit v patičce“.'
+    : 'Slovník Partneři neexistuje – pole „Zobrazit v patičce“ nebylo založeno.';
+}
+
+/**
  * Vytvoří chybějící nody typu Tým a nastaví „Celý klub“ jako úvodní stránku.
  *
  * Existující týmy (podle field_slug) přeskočí, lze tedy spustit opakovaně.

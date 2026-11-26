@@ -107,3 +107,20 @@ Typ obsahu **Projekt** zakládá `club_core` (`drush updb`, update 10002).
 
 Barvy štítků: Probíhá = hlavní barva, Plánujeme = doplňková, Hotovo = barva výhry
 (všechny jdou změnit v nastavení tématu).
+
+## Patička
+
+Vrstvy (vše se skrývá, když chybí data):
+
+1. **Náborový pruh** – *Vzhled › Nastavení › Club › Patička › Náborový pruh*.
+   Hlavní tlačítko vede na *Odkaz tlačítka* z hlavičky.
+2. **Pás partnerů „Podporují nás“** – partneři se zaškrtnutým *Zobrazit v patičce*
+   (`field_partner_footer`, `drush updb` – club_core 10003), řazení podle váhy.
+   Na úvodní stránce se nezobrazuje (má vlastní sekci partnerů).
+3. **Hlavní část** – kontakt + IČO + sociální sítě (Instagram z modulu
+   `club_instagram`, Facebook a YouTube z nastavení), **Týmy** automaticky podle
+   `field_team_group`, **region Patička** (sem dejte blok menu „Patička“ s názvem
+   „Klub“ – O klubu, Aktuality, Projekty, Partneři, Dokumenty…) a **Kde hrajeme**
+   (areál, tréninky, tlačítko Navigovat).
+4. **Spodní lišta** – © rok, poznámka, Ochrana osobních údajů, Cookies,
+   Pro trenéry (/user), Nahoru.
