@@ -19,7 +19,8 @@
     {% endif %}
       {% for item in items %}
         <li>
-          {{ link(item.title, item.url, {'class': ['hover:underline', 'underline-offset-4']}) }}
+          {# Aktivní odkaz: tučně, plnou barvou a s tečkou v hlavní barvě. #}
+          <a href="{{ item.url }}" class="hover:underline underline-offset-4 {{ item.club_active ? 'is-active font-semibold before:inline-block before:h-1.5 before:w-1.5 before:rounded-full before:bg-red before:mr-2 before:align-middle' }}"{% if item.club_active == 'page' %} aria-current="page"{% endif %}>{{ item.title }}</a>
           {% if item.below %}{{ menus.menu_links(item.below, attributes, menu_level + 1) }}{% endif %}
         </li>
       {% endfor %}

@@ -90,8 +90,9 @@
 
   /* Menu v hlavičce – desktop. */
   .club-dd { visibility: hidden; opacity: 0; transform: translateY(-4px); transition: opacity .15s, transform .15s, visibility .15s; }
-  .club-nav__item:hover > .club-dd,
-  .club-nav__item:focus-within > .club-dd,
+  /* Otevírání řídí club.js (is-open); :hover je jen záloha bez JavaScriptu. */
+  html:not(.js) .club-nav__item:hover > .club-dd,
+  html:not(.js) .club-nav__item:focus-within > .club-dd,
   .club-nav__item.is-open > .club-dd { visibility: visible; opacity: 1; transform: none; }
   .club-nav__toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
 
@@ -218,6 +219,7 @@
   .club-footer > div { display: contents; }
   .club-footer a { color: rgb(var(--club-bg) / .7); }
   .club-footer a:hover { color: var(--color-bg); }
+  .club-footer a.is-active, .club-footer-bottom a.is-active { color: var(--color-bg); }
   .club-footer ul { font-size: .875rem; }
   /* Spodní lišta: bloky vedle sebe, menu doprava. */
   .club-footer-bottom > div { display: contents; }
@@ -270,3 +272,7 @@
 @media (width >= 40rem) {
   .club-wide .club-block__head { padding-inline: 1.5rem; }
 }
+
+/* Mobilní menu: aktivní položka bez linky pod textem, jen barvou (MIMO @layer). */
+.club-mobile-nav .club-nav__active { color: var(--color-redink); background: transparent; }
+.club-mobile-nav .club-nav__active::after, .club-mobile-nav .club-nav__active::before { display: none; }

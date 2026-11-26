@@ -53,6 +53,15 @@ function club_form_system_theme_settings_alter(array &$form, FormStateInterface 
     '#description' => t('Zobrazí se u odkazů na společné týmy v podmenu, např. „s partnerským klubem“.'),
     '#default_value' => theme_get_setting('merged_label') ?: 'společný tým',
   ];
+  $form['club']['menu_sections'] = [
+    '#type' => 'textarea',
+    '#title' => t('Sekce menu pro typy obsahu'),
+    '#description' => t('Na detailu obsahu se v menu zvýrazní položka sekce. Řádek: <code>typ|/cesta</code>. Prázdné = výchozí: <code>@default</code>. Stránky pod cestou položky (/aktuality/…) se poznají samy.', ['@default' => str_replace("\n", ', ', CLUB_MENU_SECTIONS_DEFAULT)]),
+    '#rows' => 5,
+    '#default_value' => theme_get_setting('menu_sections'),
+    '#placeholder' => CLUB_MENU_SECTIONS_DEFAULT,
+  ];
+
   // Patička – hodnoty se ukládají ploše (club_name, club_phone…), skupina je jen vizuální.
   // Výzva, partneři, místo, copyright a odkazy dole jsou bloky v regionech patičky.
   $form['footer'] = [

@@ -17,6 +17,11 @@ use Drupal\Core\Url;
 use Drupal\media\MediaInterface;
 use Drupal\node\NodeInterface;
 
+/**
+ * Výchozí sekce menu pro typy obsahu (typ|cesta, řádek na typ).
+ */
+const CLUB_MENU_SECTIONS_DEFAULT = "article|/aktuality\nmatch|/zapasy\nvideo|/videa\nevent|/kalendar\nproject|/projekty";
+
 /* ------------------------------------------------------------------------
  * Název klubu a barvy z nastavení tématu
  * --------------------------------------------------------------------- */
@@ -616,6 +621,82 @@ function club_preprocess_taxonomy_term__partner(array &$variables): void {
     'level' => _club_value($term, 'field_partner_level'),
     'level_label' => _club_list_label($term, 'field_partner_level'),
   ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for menu (všechna menu i menu--club-header).
+ *
+ * Každé položce nastaví club_active:
+ * - 'page'    – odkaz vede přesně na aktuální stránku (aria-current="page"),
+ * - 'section' – aktuální stránka patří do sekce položky: aktivní trail Drupalu,
+ *               adresa pod cestou položky (/aktuality/… pod /aktuality) nebo typ
+ *               obsahu podle nastavení tématu (článek → /aktuality),
+ * - NULL      – jinak.
+ * Rodič aktivní položky je 'section'.
+ */
+function club_preprocess_menu(array &$variables): void {
+  if (empty($variables['items'])) {
+    return;
+  }
+  $variables['#cache']['contexts'][] = 'url.path';
+  $request = \Drupal::request();
+  $current = rtrim($request->getPathInfo(), '/') ?: '/';
+
+  // Sekce podle typu obsahu (detail článku → položka /aktuality).
+  $section = NULL;
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if ($node instanceof NodeInterface) {
+    $section = _club_menu_sections()[$node->bundle()] ?? NULL;
+  }
+
+  $base = $request->getBasePath();
+  $walk = static function (array &$items) use (&$walk, $current, $section, $base): bool {
+    $any = FALSE;
+    foreach ($items as &$item) {
+      $path = NULL;
+      $url = $item['url'] ?? NULL;
+      if ($url instanceof Url && !$url->isExternal() && !($url->isRouted() && in_array($url->getRouteName(), ['<nolink>', '<none>', '<button>'], TRUE))) {
+        $path = (string) parse_url($url->toString(TRUE)->getGeneratedUrl(), PHP_URL_PATH);
+        if ($base !== '' && str_starts_with($path, $base)) {
+          $path = substr($path, strlen($base));
+        }
+        $path = rtrim($path, '/') ?: '/';
+      }
+
+      $child_active = !empty($item['below']) && $walk($item['below']);
+      $item['club_active'] = NULL;
+      if ($path !== NULL && $path === $current) {
+        $item['club_active'] = 'page';
+      }
+      elseif ($child_active || !empty($item['in_active_trail'])
+        || ($path !== NULL && $path !== '/' && (str_starts_with($current, $path . '/') || $path === $section))) {
+        $item['club_active'] = 'section';
+      }
+      $any = $any || $item['club_active'] !== NULL;
+    }
+    return $any;
+  };
+  $walk($variables['items']);
+}
+
+/**
+ * Typ obsahu → cesta sekce v menu (Vzhled › Nastavení › Club › Menu).
+ *
+ * @return array<string, string>
+ */
+function _club_menu_sections(): array {
+  $raw = (string) (theme_get_setting('menu_sections') ?? '');
+  if (trim($raw) === '') {
+    $raw = CLUB_MENU_SECTIONS_DEFAULT;
+  }
+  $map = [];
+  foreach (preg_split('/\R/', $raw) as $line) {
+    [$bundle, $path] = array_map('trim', explode('|', $line, 2)) + [1 => ''];
+    if ($bundle !== '' && str_starts_with($path, '/')) {
+      $map[$bundle] = rtrim($path, '/') ?: '/';
+    }
+  }
+  return $map;
 }
 
 /**

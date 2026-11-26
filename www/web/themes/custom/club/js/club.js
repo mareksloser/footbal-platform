@@ -22,29 +22,65 @@
 
   Drupal.behaviors.clubDropdowns = {
     attach(context) {
+      // Myš na desktopu: podmenu se otevírá najetím, klik ho nezavírá.
+      // Klávesnice a dotyk: otevírá/zavírá se klikem (Enter, mezerník, ťuknutí).
+      // Stav drží jen třída is-open + aria-expanded, takže šipka vždy sedí.
+      const canHover = window.matchMedia('(hover: hover) and (pointer: fine)');
+      const setOpen = (item, open) => {
+        item.classList.toggle('is-open', open);
+        item.querySelector(':scope > .club-nav__toggle')?.setAttribute('aria-expanded', String(open));
+      };
+      const closeSiblings = (item) => {
+        item.parentElement.querySelectorAll(':scope > .is-open').forEach((el) => {
+          if (el !== item) setOpen(el, false);
+        });
+      };
+      const inMobile = (el) => !!el.closest('.club-mobile-nav');
+
       once('club-dd', '.club-nav__toggle', context).forEach((btn) => {
+        const item = btn.closest('.club-nav__item');
+        let closeTimer;
+
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
-          const item = btn.closest('.club-nav__item');
-          const open = !item.classList.contains('is-open');
-          item.parentElement.querySelectorAll(':scope > .is-open').forEach((el) => {
-            el.classList.remove('is-open');
-            el.querySelector('.club-nav__toggle')?.setAttribute('aria-expanded', 'false');
-          });
-          item.classList.toggle('is-open', open);
-          btn.setAttribute('aria-expanded', String(open));
+          // Klik myší na už najetím otevřené menu – nechat otevřené.
+          const hoverOpen = canHover.matches && !inMobile(item) && e.detail > 0;
+          const open = hoverOpen ? true : !item.classList.contains('is-open');
+          closeSiblings(item);
+          setOpen(item, open);
+        });
+
+        item.addEventListener('mouseenter', () => {
+          if (!canHover.matches || inMobile(item)) return;
+          clearTimeout(closeTimer);
+          closeSiblings(item);
+          setOpen(item, true);
+        });
+        item.addEventListener('mouseleave', () => {
+          if (!canHover.matches || inMobile(item)) return;
+          // Krátká prodleva – drobné vyjetí kurzoru menu nezavře.
+          closeTimer = setTimeout(() => {
+            // Kdo je v podmenu klávesnicí (focus-visible), tomu ho nezavírat.
+            if (!item.querySelector(':focus-visible')) setOpen(item, false);
+          }, 150);
+        });
+        // Odchod klávesnicí (Tab) mimo položku podmenu zavře.
+        item.addEventListener('focusout', (e) => {
+          if (inMobile(item) || item.contains(e.relatedTarget)) return;
+          if (!canHover.matches || !item.matches(':hover')) setOpen(item, false);
         });
       });
 
       once('club-dd-close', 'html', context).forEach(() => {
-        const closeAll = () => document.querySelectorAll('.club-nav__item.is-open').forEach((el) => {
+        const closeAll = (restoreFocus) => document.querySelectorAll('.club-nav__item.is-open').forEach((el) => {
           // V mobilním panelu nechat otevřené, zavírá se tlačítkem.
-          if (el.closest('.club-mobile-nav')) return;
-          el.classList.remove('is-open');
-          el.querySelector('.club-nav__toggle')?.setAttribute('aria-expanded', 'false');
+          if (inMobile(el)) return;
+          const hadFocus = el.contains(document.activeElement);
+          setOpen(el, false);
+          if (restoreFocus && hadFocus) el.querySelector(':scope > .club-nav__toggle')?.focus();
         });
-        document.addEventListener('click', closeAll);
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAll(); });
+        document.addEventListener('click', () => closeAll(false));
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAll(true); });
       });
     },
   };
