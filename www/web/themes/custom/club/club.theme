@@ -970,8 +970,10 @@ function club_preprocess_node__project(array &$variables): void {
   ];
 
   if ($variables['view_mode'] === 'full') {
-    if (isset($variables['content']['body'])) {
-      $variables['content']['body']['#label_display'] = 'hidden';
+    foreach (['body', 'field_body'] as $field) {
+      if (isset($variables['content'][$field])) {
+        $variables['content'][$field]['#label_display'] = 'hidden';
+      }
     }
     $budget = _club_value($node, 'field_project_budget');
     $partners = $node->hasField('field_project_partners') ? $node->get('field_project_partners')->referencedEntities() : [];

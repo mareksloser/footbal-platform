@@ -35,7 +35,7 @@ function club_core_update_10002(): string {
   $path = \Drupal::service('extension.list.module')->getPath('club_core') . '/config/optional';
   \Drupal::service('config.installer')->installOptionalConfig(new FileStorage($path));
   return \Drupal::entityTypeManager()->getStorage('node_type')->load('project')
-    ? 'Typ obsahu Projekt je připraven. Přidejte mu existující pole Perex (field_lead), Obrázek (field_image) a Text (body).'
+    ? 'Typ obsahu Projekt je připraven. Přidejte mu existující pole Perex (field_lead), Obrázek (field_image) a Text (field_body).'
     : 'Typ obsahu Projekt se nepodařilo založit.';
 }
 

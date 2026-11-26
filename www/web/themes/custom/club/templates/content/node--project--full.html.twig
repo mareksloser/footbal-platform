@@ -37,8 +37,8 @@
       {% if project.image %}
         <img src="{{ project.image }}" alt="{{ project.image_alt }}" class="w-full aspect-[16/9] object-cover rounded-xl">
       {% endif %}
-      {% if content.body|render|striptags|trim %}
-        <div class="club-prose max-w-3xl">{{ content.body }}</div>
+      {% if content.field_body|render|striptags|trim or content.body|render|striptags|trim %}
+        <div class="club-prose max-w-3xl">{{ content.field_body }}{{ content.body }}</div>
       {% endif %}
     </div>
 

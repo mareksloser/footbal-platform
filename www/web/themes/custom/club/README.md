@@ -95,7 +95,7 @@ Ve views používejte formát *Rendered entity* s příslušným view modem.
 Typ obsahu **Projekt** zakládá `club_core` (`drush updb`, update 10002).
 
 1. U typu Projekt přidejte *existující* pole **Perex** (`field_lead`),
-   **Obrázek** (`field_image`) a **Text** (`body`). Pole **Podpořili**
+   **Obrázek** (`field_image`) a **Text** (`field_body`). Pole **Podpořili**
    (`field_project_partners`) zapněte ve formuláři, pokud existuje slovník Partneři.
 2. View `projects` (obsah typu Projekt, publikováno, view mode *teaser*,
    formát *Unformatted list*, řazení *Vytvořeno* sestupně):
